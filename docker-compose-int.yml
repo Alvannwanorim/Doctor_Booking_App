@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  backend-service:
+    container_name: backend-int
+    image: telidoc/backend:int
+    ports:
+      - "8002:3000"
+    networks:
+      - back
+
+networks:
+  back:
+    name: backend
+    external: true

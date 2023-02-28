@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  backend:
+    container_name: backend
+    image: telidoc/backend:dev
+    ports:
+      - '8000:3000'
+    networks:
+      - back
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=alvan
+      - MONGO_INITDB_ROOT_PASSWORD=alvan2327
+      - MONGO_INITDB_DATABASE=test
+    volumes:
+      - mongo:/data/db
+    networks:
+      - back
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - back
+volumes:
+  mongo:
+    external:
+      name: mongo_data
+
+networks:
+  back:
+    driver: bridge
