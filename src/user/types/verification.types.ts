@@ -1,0 +1,4 @@
+export enum VERIFICATION {
+  VERIFIED = 'VERIFIED',
+  PENDING = 'PENDING',
+}

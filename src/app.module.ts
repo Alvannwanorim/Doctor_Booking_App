@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express/multer';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AppService } from './app.service';
       name: 'telidoc',
     }),
     MongooseModule.forRoot(process.env.MONGOURI),
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
