@@ -1,4 +1,4 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,9 +15,16 @@ export class UserService {
    * @author Alvan
    */
   public async register(userDto: CreateUserDto): Promise<User | null> {
-    const existingUser = this.userModel.findOne({ email: userDto.email });
+    const existingUser = await this.userModel.findOne({ email: userDto.email });
 
-    if (existingUser) throw new BadGatewayException('User already exists');
+    if (existingUser)
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User already exist',
+        },
+        HttpStatus.FORBIDDEN,
+      );
 
     const user = new this.userModel({ ...userDto });
     const salt = await bcrypt.genSalt(10);
