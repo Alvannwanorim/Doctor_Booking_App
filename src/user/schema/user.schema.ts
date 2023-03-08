@@ -25,10 +25,10 @@ export class User {
   @Prop({ required: true, trim: true, unique: true })
   email: string;
 
-  @Prop({ required: true, trim: true, unique: true })
+  @Prop({ trim: true, unique: true })
   phoneNumber: string;
 
-  @Prop({ required: true, trim: true, unique: true })
+  @Prop({ trim: true, unique: true })
   password: string;
 
   @Prop({ enum: ROLES, default: ROLES.PATIENT })
