@@ -2,11 +2,14 @@ import { Controller, Req, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/schema/user.schema';
+import { ROLES } from 'src/user/types/user.types';
 import { AuthService } from './auth.service';
+import { Roles } from './decorators/roles.decorator';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 import { GoogleAuthGuard } from './guards/google.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/local.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -34,7 +37,8 @@ export class AuthController {
     return await this.authService.loginDoctor(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.DOCTOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   public test(@Req() req) {
     return req.user;
