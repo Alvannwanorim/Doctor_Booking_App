@@ -12,9 +12,15 @@ import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { GoogleAuthDto } from 'src/auth/dto/google-auth.dto';
 import { VERIFICATION } from './types/verification.types';
+import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
+import { ROLES } from './types/user.types';
+import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Doctor.name) private doctorModel: Model<DoctorDocument>,
+  ) {}
 
   /**
    * Save user information to database
@@ -34,6 +40,17 @@ export class UserService {
         HttpStatus.FORBIDDEN,
       );
 
+    const exitingPhoneNumber = await this.userModel.findOne({
+      phoneNumber: userDto.phoneNumber,
+    });
+    if (exitingPhoneNumber)
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Phone number already in use',
+        },
+        HttpStatus.FORBIDDEN,
+      );
     const user = new this.userModel({ ...userDto });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
@@ -79,5 +96,31 @@ export class UserService {
     });
     await newUser.save();
     return newUser;
+  }
+
+  public async registerDoctor(createDoctorDto: CreateDoctorDto) {
+    const user = await this.register({
+      firstName: createDoctorDto.firstName,
+      lastName: createDoctorDto.lastName,
+      email: createDoctorDto.email,
+      password: createDoctorDto.password,
+      phoneNumber: createDoctorDto.phoneNumber,
+      roles: ROLES.DOCTOR,
+    });
+    if (user) {
+      const doctor = new this.doctorModel({
+        userId: user._id,
+        dateOfBirth: createDoctorDto.dateOfBirth,
+        gender: createDoctorDto.gender,
+        country: createDoctorDto.country,
+        state: createDoctorDto.state,
+        address: createDoctorDto.address,
+        category: createDoctorDto.category,
+        experience: createDoctorDto.experience,
+        professional_status: createDoctorDto.professional_status,
+      });
+      await doctor.save();
+      return user;
+    }
   }
 }
