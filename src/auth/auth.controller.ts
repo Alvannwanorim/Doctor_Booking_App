@@ -1,5 +1,14 @@
-import { Controller, Req, Post, Body, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Req,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Put,
+} from '@nestjs/common';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
+import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/schema/user.schema';
 import { ROLES } from 'src/user/types/user.types';
@@ -61,5 +70,18 @@ export class AuthController {
       lastName: String(usersDetails.given_name),
     };
     return this.authService.createUserByGoogleAuth(googleData);
+  }
+
+  @Get('/current-user')
+  @UseGuards(JwtAuthGuard)
+  public async getCurrentUser(@Req() req) {
+    return await this.authService.getCurrentUser(req.user._id);
+  }
+
+  @Roles(ROLES.DOCTOR)
+  @Put('/doctor/update')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  public async updateDoctor(@Req() req, @Body() doctorDto: DoctorDto) {
+    return await this.authService.updateDoctor(req.user._id, doctorDto);
   }
 }

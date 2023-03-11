@@ -14,6 +14,8 @@ import { JwtDto } from './dto/jwt.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { DoctorService } from 'src/doctor/doctor.service';
 import { ROLES } from 'src/user/types/user.types';
+import { DoctorDto } from 'src/doctor/dto/doctor.dto';
+import { Doctor } from 'src/doctor/schema/doctor.schema';
 
 @Injectable()
 export class AuthService {
@@ -110,5 +112,17 @@ export class AuthService {
   public async registerDoctor(createDoctorDto: CreateDoctorDto): Promise<User> {
     const doctor = await this.userService.registerDoctor(createDoctorDto);
     return doctor;
+  }
+
+  public async updateDoctor(
+    userId: string,
+    doctorDto: DoctorDto,
+  ): Promise<Doctor> {
+    const doctor = await this.userService.updateDoctor(userId, doctorDto);
+    return doctor;
+  }
+
+  public getCurrentUser(userId: string) {
+    return this.userService.getCurrentUser(userId);
   }
 }

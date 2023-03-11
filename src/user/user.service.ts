@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -15,6 +16,8 @@ import { VERIFICATION } from './types/verification.types';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { ROLES } from './types/user.types';
 import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
+import { PhoneNumberDto } from './dto/phone-number.dto';
+import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -122,5 +125,53 @@ export class UserService {
       await doctor.save();
       return user;
     }
+  }
+
+  public async updatePhoneNumber(
+    phoneNumberDto: PhoneNumberDto,
+    userId: string,
+  ) {
+    const user = await this.userModel.findById(userId);
+    if (user) {
+      throw new NotFoundException('user not found');
+    }
+    const existingPhoneNumber = await this.userModel.findOne({
+      phoneNumber: phoneNumberDto.phoneNumber,
+    });
+    if (existingPhoneNumber && existingPhoneNumber._id !== user._id) {
+      throw new BadRequestException(
+        'Phone number already in sue by another user',
+      );
+    } else if (existingPhoneNumber && existingPhoneNumber._id === user._id) {
+      return user;
+    }
+    user.phoneNumber = phoneNumberDto.phoneNumber;
+    await user.save();
+    return user;
+  }
+
+  public async updateDoctor(userId: string, doctorDto: DoctorDto) {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    const doctor = await this.doctorModel.findById(userId);
+    if (doctor) {
+      return doctor;
+    }
+    const newDoctor = new this.doctorModel({ userId, ...doctorDto });
+    await newDoctor.save();
+
+    user.roles = ROLES.DOCTOR;
+    await user.save();
+    return doctor;
+  }
+
+  public async getCurrentUser(userId: string) {
+    const user = await this.userModel.findById(userId).select('-password');
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
   }
 }
