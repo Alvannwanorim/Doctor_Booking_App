@@ -6,6 +6,7 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DoctorModule } from './doctor/doctor.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DoctorModule } from './doctor/doctor.module';
     UserModule,
     AuthModule,
     DoctorModule,
+    AppointmentsModule,
   ],
   controllers: [],
   providers: [],
