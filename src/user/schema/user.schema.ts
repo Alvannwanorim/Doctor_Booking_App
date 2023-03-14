@@ -16,20 +16,35 @@ export type UserDocument = User & Document;
 export class User {
   _id: string;
 
-  @Prop({ required: true, trim: true })
+  @Prop({ type: String, required: true, trim: true })
   firstName: string;
 
-  @Prop({ required: true, trim: true })
+  @Prop({ type: String, required: true, trim: true })
   lastName: string;
 
-  @Prop({ required: true, trim: true, unique: true })
+  @Prop({ type: String, required: true, trim: true, unique: true })
   email: string;
 
   @Prop({ trim: true, unique: true })
   phoneNumber: string;
 
-  @Prop({ trim: true, unique: true })
+  @Prop({ type: String, trim: true })
   password: string;
+
+  @Prop({ type: String, trim: true })
+  dateOfBirth: string;
+
+  @Prop({ type: String, trim: true })
+  gender: string;
+
+  @Prop({ type: String, trim: true })
+  country: string;
+
+  @Prop({ type: String, trim: true })
+  state: string;
+
+  @Prop({ type: String, trim: true })
+  address: string;
 
   @Prop({ enum: ROLES, default: ROLES.PATIENT })
   roles: ROLES;

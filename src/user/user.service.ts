@@ -18,6 +18,7 @@ import { ROLES } from './types/user.types';
 import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 import { PhoneNumberDto } from './dto/phone-number.dto';
 import { DoctorDto } from 'src/doctor/dto/doctor.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -173,5 +174,61 @@ export class UserService {
       throw new NotFoundException('user not found');
     }
     return user;
+  }
+  public async getUserById(userId: string) {
+    const user = await this.userModel.findById(userId).select('-password');
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
+  }
+  public async deleteUser(userId: string) {
+    const user = await this.userModel.findById(userId).select('-password');
+
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    if (user.roles === ROLES.DOCTOR) {
+      throw new BadRequestException('process not completed');
+    }
+    await user.remove();
+    return user;
+  }
+  public async getAllUser() {
+    const users = await this.userModel
+      .find({ roles: ROLES.PATIENT })
+      .select('-password');
+    return users;
+  }
+  public async updateUser(userData: UpdateUserDto, userId: string) {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    if (userData.email !== user.email) {
+      const existingUser = await this.userModel.findOne({
+        email: userData.email,
+      });
+      if (existingUser)
+        throw new BadRequestException(
+          'This email is already in use by another user',
+        );
+      const updatedUser = await this.userModel.findByIdAndUpdate(
+        { _id: userId },
+        { verificationStatus: VERIFICATION.PENDING, ...userData },
+        { new: true },
+      );
+
+      delete updatedUser.password;
+      return updatedUser;
+    } else {
+      const updatedUser = await this.userModel.findByIdAndUpdate(
+        { _id: userId },
+        { ...userData },
+        { new: true },
+      );
+      delete updatedUser.password;
+      return updatedUser;
+    }
   }
 }
