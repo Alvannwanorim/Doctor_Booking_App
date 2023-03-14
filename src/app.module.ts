@@ -23,7 +23,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
     BullModule.registerQueue({
       name: 'telidoc',
     }),
-    MongooseModule.forRoot(process.env.MONGOURI),
+    MongooseModule.forRoot(process.env.MONGO_LOCAL),
     UserModule,
     AuthModule,
     DoctorModule,
