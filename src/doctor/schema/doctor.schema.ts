@@ -20,7 +20,7 @@ export class Doctor {
     required: [true, 'Provide a user id'],
     immutable: false,
   })
-  userId: string;
+  details: string;
 
   @Prop({ type: Date, trim: true })
   dateOfBirth: string;

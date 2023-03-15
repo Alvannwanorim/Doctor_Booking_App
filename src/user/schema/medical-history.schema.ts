@@ -21,7 +21,7 @@ export class MedicalHistory implements MedicalHistoryInterface {
     immutable: false,
     unique: true,
   })
-  userId: string;
+  user: string;
 
   @Prop({
     type: String,

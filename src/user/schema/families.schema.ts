@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { VitalsInterface } from '../interfaces/vitals.interface';
-export type VitalsDocument = Vitals & Document;
+import { FamiliesInterface } from '../interfaces/families.interface';
+
+export type FamiliesDocument = Families & Document;
 const { ObjectId } = mongoose.Schema.Types;
 @Schema({
   toJSON: {
@@ -12,7 +13,7 @@ const { ObjectId } = mongoose.Schema.Types;
   },
   timestamps: true,
 })
-export class Vitals implements VitalsInterface {
+export class Families implements FamiliesInterface {
   _id: string;
 
   @Prop({
@@ -27,31 +28,43 @@ export class Vitals implements VitalsInterface {
     type: String,
     trim: true,
   })
-  height: string;
+  name: string;
 
   @Prop({
     type: String,
     trim: true,
   })
-  weight: string;
+  dateOfBirth: string;
 
   @Prop({
     type: String,
     trim: true,
   })
-  bloodSugar: string;
+  phoneNumber: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+  })
+  gender: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+  })
+  relationship: string;
 }
 
-export const VitalsSchema = SchemaFactory.createForClass(Vitals);
+export const FamiliesSchema = SchemaFactory.createForClass(Families);
 
-VitalsSchema.virtual('id').get(function () {
+FamiliesSchema.virtual('id').get(function () {
   return this._id;
 });
-VitalsSchema.virtual('vitalsId').get(function () {
+FamiliesSchema.virtual('familiesId').get(function () {
   return this._id;
 });
 
-VitalsSchema.methods.toJSON = function () {
+FamiliesSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj._id;
   delete obj._v;

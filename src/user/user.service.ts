@@ -19,11 +19,16 @@ import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 import { PhoneNumberDto } from './dto/phone-number.dto';
 import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Vitals, VitalsDocument } from './schema/vitals.schema';
+
+import { Families, FamiliesDocument } from './schema/families.schema';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Doctor.name) private doctorModel: Model<DoctorDocument>,
+    @InjectModel(Vitals.name) private vitalsModel: Model<VitalsDocument>,
+    @InjectModel(Families.name) private familiesModel: Model<FamiliesDocument>,
   ) {}
 
   /**
@@ -160,7 +165,7 @@ export class UserService {
     if (doctor) {
       return doctor;
     }
-    const newDoctor = new this.doctorModel({ userId, ...doctorDto });
+    const newDoctor = new this.doctorModel({ details: userId, ...doctorDto });
     await newDoctor.save();
 
     user.roles = ROLES.DOCTOR;
