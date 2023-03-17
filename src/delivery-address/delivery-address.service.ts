@@ -27,7 +27,7 @@ export class DeliveryAddressService {
   public async getUserAddress(userId: string) {
     const id = new mongoose.Types.ObjectId(userId);
 
-    const addresses = await this.addressModel.find({});
+    const addresses = await this.addressModel.find({ user: id });
     return addresses;
   }
   public async getUserAddressById(addressId: string) {

@@ -19,7 +19,7 @@ import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 import { PhoneNumberDto } from './dto/phone-number.dto';
 import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Vitals, VitalsDocument } from './schema/vitals.schema';
+import { Vitals, VitalsDocument } from '../vitals/schema/vitals.schema';
 
 import { Families, FamiliesDocument } from './schema/families.schema';
 @Injectable()

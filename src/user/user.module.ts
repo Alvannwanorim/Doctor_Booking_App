@@ -14,10 +14,9 @@ import {
   MedicalHistorySchema,
 } from './schema/medical-history.schema';
 import { User, USerSchema } from './schema/user.schema';
-import { Vitals, VitalsSchema } from './schema/vitals.schema';
+import { Vitals, VitalsSchema } from '../vitals/schema/vitals.schema';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { VitalsService } from './vitals.service';
 
 @Module({
   imports: [
@@ -32,12 +31,7 @@ import { VitalsService } from './vitals.service';
     DoctorModule,
   ],
   controllers: [UserController],
-  providers: [
-    UserService,
-    VitalsService,
-    MedicalHistoryService,
-    FamiliesService,
-  ],
+  providers: [UserService, MedicalHistoryService, FamiliesService],
   exports: [UserService, MongooseModule],
 })
 export class UserModule {}

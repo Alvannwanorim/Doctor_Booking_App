@@ -15,16 +15,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MedicalHistoryService } from './medical-history.service';
 import { FamiliesService } from './families.service';
-import { VitalsService } from './vitals.service';
-import { VitalsDto } from './dto/vitals.dto';
-import { FamiliesDto } from './dto/families.dto';
-import { MedicalHistoryDto } from './dto/medical-history.dto';
 @Controller('patient')
 export class UserController {
   constructor(
     private readonly userService: UserService,
-
-    private readonly vitalsService: VitalsService,
     private readonly familiesService: FamiliesService,
     private readonly medicalHistoryService: MedicalHistoryService,
   ) {}
@@ -54,36 +48,6 @@ export class UserController {
   public async UpdateUser(@Body() userData: UpdateUserDto, @Req() req) {
     return await this.userService.updateUser(userData, req.user._id);
   }
-
-  // //vitals
-  // @Get('/vitals')
-  // @UseGuards(JwtAuthGuard)
-  // public async getUserVitals(@Req() req) {
-  //   return await this.vitalsService.getUserVitals(req.user._id);
-  // }
-  // @Post('/vitals')
-  // @UseGuards(JwtAuthGuard)
-  // public async createUserVitals(@Body() vitalsDto: VitalsDto, @Req() req) {
-  //   return await this.vitalsService.createUserVitals(vitalsDto, req.user._id);
-  // }
-  // @Put('/vitals/:vitalsId')
-  // @UseGuards(JwtAuthGuard)
-  // public async updateUserVitals(
-  //   @Body() vitalsDto: VitalsDto,
-  //   @Param('vitalsId') vitalsId,
-  // ) {
-  //   return await this.vitalsService.updateUserVitals(vitalsDto, vitalsId);
-  // }
-  // @Delete('/vitals/:vitalsId')
-  // @UseGuards(JwtAuthGuard)
-  // public async DeleteUserVitals(@Param('vitalsId') vitalsId) {
-  //   return await this.vitalsService.DeleteUserVitals(vitalsId);
-  // }
-  // @Get('/vitals/:vitalsId')
-  // @UseGuards(JwtAuthGuard)
-  // public async getUserVitalsById(@Param('vitalsId') addressId) {
-  //   return await this.addressService.getUserAddressById(addressId);
-  // }
 
   // //families
   // @Get('/families')

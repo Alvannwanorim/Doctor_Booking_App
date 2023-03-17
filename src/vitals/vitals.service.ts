@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { User, UserDocument } from 'src/user/schema/user.schema';
 import { VitalsDto } from './dto/vitals.dto';
-
-import { User, UserDocument } from './schema/user.schema';
 import { Vitals, VitalsDocument } from './schema/vitals.schema';
 
 @Injectable()
