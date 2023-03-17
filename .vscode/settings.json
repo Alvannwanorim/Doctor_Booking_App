@@ -4,8 +4,10 @@
   },
   "editor.formatOnSave": true,
   "cSpell.words": [
+    "Dauth",
     "MONGOURI",
     "nestjs",
-    "telidoc"
+    "telidoc",
+    "VERIFICATIONSTATUS"
   ]
 }
