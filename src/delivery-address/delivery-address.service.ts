@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
+import { User, UserDocument } from 'src/user/schema/user.schema';
 import { AddressDto } from './dto/address.dto';
 import {
   DeliveryAddress,
   DeliveryAddressDocument,
 } from './schema/addresses.schema';
-import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
-export class AddressService {
+export class DeliveryAddressService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(DeliveryAddress.name)
@@ -20,12 +20,14 @@ export class AddressService {
     const user = await this.userModel.findById(userId);
     if (!user) throw new NotFoundException('User not found');
 
-    const address = new this.addressModel({ user: userId, ...addressDto });
+    const address = new this.addressModel({ user: user._id, ...addressDto });
     await address.save();
     return address;
   }
   public async getUserAddress(userId: string) {
-    const addresses = await this.addressModel.find({ user: userId });
+    const id = new mongoose.Types.ObjectId(userId);
+
+    const addresses = await this.addressModel.find({});
     return addresses;
   }
   public async getUserAddressById(addressId: string) {

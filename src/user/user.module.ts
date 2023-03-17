@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DoctorModule } from 'src/doctor/doctor.module';
 import { Doctor, DoctorSchema } from 'src/doctor/schema/doctor.schema';
-import { AddressService } from './address.service';
 import { FamiliesService } from './families.service';
 import { MedicalHistoryService } from './medical-history.service';
 import {
   DeliveryAddress,
   DeliveryAddressSchema,
-} from './schema/addresses.schema';
+} from '../delivery-address/schema/addresses.schema';
 import { Families, FamiliesSchema } from './schema/families.schema';
 import {
   MedicalHistory,
@@ -35,7 +34,6 @@ import { VitalsService } from './vitals.service';
   controllers: [UserController],
   providers: [
     UserService,
-    AddressService,
     VitalsService,
     MedicalHistoryService,
     FamiliesService,

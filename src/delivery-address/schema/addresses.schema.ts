@@ -14,7 +14,7 @@ const { ObjectId } = mongoose.Schema.Types;
   timestamps: true,
 })
 export class DeliveryAddress implements DeliveryAddressesInterface {
-  _id: string;
+  _id: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: ObjectId,
@@ -22,7 +22,7 @@ export class DeliveryAddress implements DeliveryAddressesInterface {
     immutable: false,
     unique: true,
   })
-  user: string;
+  user: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: String,
