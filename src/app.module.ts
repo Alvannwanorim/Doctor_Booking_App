@@ -10,6 +10,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
 import { DeliveryAddressModule } from './delivery-address/delivery-address.module';
 import { VitalsModule } from './vitals/vitals.module';
 import { FamiliesModule } from './families/families.module';
+import { MedicalHistoryModule } from './medical-history/medical-history.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { FamiliesModule } from './families/families.module';
     DeliveryAddressModule,
     VitalsModule,
     FamiliesModule,
+    MedicalHistoryModule,
   ],
   controllers: [],
   providers: [],
