@@ -21,7 +21,7 @@ import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Vitals, VitalsDocument } from '../vitals/schema/vitals.schema';
 
-import { Families, FamiliesDocument } from './schema/families.schema';
+import { Families, FamiliesDocument } from '../families/schema/families.schema';
 @Injectable()
 export class UserService {
   constructor(

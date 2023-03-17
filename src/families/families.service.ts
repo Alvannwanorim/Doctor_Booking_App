@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FamiliesDto } from './dto/families.dto';
-import { Families, FamiliesDocument } from './schema/families.schema';
-
-import { User, UserDocument } from './schema/user.schema';
+import { User, UserDocument } from 'src/user/schema/user.schema';
+import { FamiliesDto } from '../families/dto/families.dto';
+import { Families, FamiliesDocument } from '../families/schema/families.schema';
 
 @Injectable()
 export class FamiliesService {

@@ -9,6 +9,7 @@ import { DoctorModule } from './doctor/doctor.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { DeliveryAddressModule } from './delivery-address/delivery-address.module';
 import { VitalsModule } from './vitals/vitals.module';
+import { FamiliesModule } from './families/families.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { VitalsModule } from './vitals/vitals.module';
     AppointmentsModule,
     DeliveryAddressModule,
     VitalsModule,
+    FamiliesModule,
   ],
   controllers: [],
   providers: [],

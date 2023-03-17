@@ -14,12 +14,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { MedicalHistoryService } from './medical-history.service';
-import { FamiliesService } from './families.service';
 @Controller('patient')
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly familiesService: FamiliesService,
     private readonly medicalHistoryService: MedicalHistoryService,
   ) {}
 
@@ -48,45 +46,6 @@ export class UserController {
   public async UpdateUser(@Body() userData: UpdateUserDto, @Req() req) {
     return await this.userService.updateUser(userData, req.user._id);
   }
-
-  // //families
-  // @Get('/families')
-  // @UseGuards(JwtAuthGuard)
-  // public async getUserFamilies(@Req() req) {
-  //   return await this.familiesService.getUserFamilies(req.user._id);
-  // }
-  // @Post('/families')
-  // @UseGuards(JwtAuthGuard)
-  // public async createUserFamilies(
-  //   @Body() familiesDto: FamiliesDto,
-  //   @Req() req,
-  // ) {
-  //   return await this.familiesService.createUserFamilies(
-  //     familiesDto,
-  //     req.user._id,
-  //   );
-  // }
-  // @Put('/families/:familiesId')
-  // @UseGuards(JwtAuthGuard)
-  // public async updateUserFamilies(
-  //   @Body() familiesDto: FamiliesDto,
-  //   @Param('familiesId') familiesId,
-  // ) {
-  //   return await this.familiesService.updateUserFamilies(
-  //     familiesDto,
-  //     familiesId,
-  //   );
-  // }
-  // @Delete('/families/:familiesId')
-  // @UseGuards(JwtAuthGuard)
-  // public async DeleteUserFamilies(@Param('familiesId') familiesId) {
-  //   return await this.familiesService.DeleteUserFamilies(familiesId);
-  // }
-  // @Get('/families/:familiesId')
-  // @UseGuards(JwtAuthGuard)
-  // public async getUserFamiliesById(@Param('familiesId') familiesId) {
-  //   return await this.familiesService.getUserFamiliesById(familiesId);
-  // }
 
   // //medical history
   // @Get('/medical-history')
