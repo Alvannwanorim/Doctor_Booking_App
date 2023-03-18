@@ -17,7 +17,6 @@ import { FamiliesService } from './families.service';
 export class FamiliesController {
   constructor(private readonly familiesService: FamiliesService) {}
 
-  //families
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getUserFamilies(@Req() req) {

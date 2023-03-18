@@ -14,15 +14,14 @@ const { ObjectId } = mongoose.Schema.Types;
   timestamps: true,
 })
 export class Families implements FamiliesInterface {
-  _id: string;
+  _id: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: ObjectId,
     required: [true, 'Provide a user id'],
     immutable: false,
-    unique: true,
   })
-  user: string;
+  user: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: String,

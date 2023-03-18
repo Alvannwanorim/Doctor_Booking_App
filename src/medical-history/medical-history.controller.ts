@@ -54,7 +54,7 @@ export class MedicalHistoryController {
       medicalHistoryId,
     );
   }
-  @Get('/medical-history/:medicalHistoryId')
+  @Get('/:medicalHistoryId')
   @UseGuards(JwtAuthGuard)
   public async getUserMedicalHistoryById(
     @Param('medicalHistoryId') medicalHistoryId,

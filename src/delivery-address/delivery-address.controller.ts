@@ -44,7 +44,7 @@ export class DeliveryAddressController {
   public async DeleteUserAddress(@Param('addressId') addressId) {
     return await this.addressService.DeleteUserAddress(addressId);
   }
-  @Get('/find-one/:addressId')
+  @Get('/:addressId')
   @UseGuards(JwtAuthGuard)
   public async getUserAddressById(@Param('addressId') addressId) {
     return await this.addressService.getUserAddressById(addressId);

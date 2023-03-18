@@ -20,7 +20,6 @@ export class DeliveryAddress implements DeliveryAddressesInterface {
     type: ObjectId,
     required: [true, 'Provide a user id'],
     immutable: false,
-    unique: true,
   })
   user: mongoose.Schema.Types.ObjectId;
 

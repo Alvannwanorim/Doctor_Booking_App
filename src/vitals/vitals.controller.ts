@@ -28,7 +28,7 @@ export class VitalsController {
   public async createUserVitals(@Body() vitalsDto: VitalsDto, @Req() req) {
     return await this.vitalsService.createUserVitals(vitalsDto, req.user._id);
   }
-  @Put('/vitals/:vitalsId')
+  @Put('/:vitalsId')
   @UseGuards(JwtAuthGuard)
   public async updateUserVitals(
     @Body() vitalsDto: VitalsDto,
@@ -36,12 +36,12 @@ export class VitalsController {
   ) {
     return await this.vitalsService.updateUserVitals(vitalsDto, vitalsId);
   }
-  @Delete('/vitals/:vitalsId')
+  @Delete('/:vitalsId')
   @UseGuards(JwtAuthGuard)
   public async DeleteUserVitals(@Param('vitalsId') vitalsId) {
     return await this.vitalsService.DeleteUserVitals(vitalsId);
   }
-  @Get('/vitals/:vitalsId')
+  @Get('/:vitalsId')
   @UseGuards(JwtAuthGuard)
   public async getUserVitalsById(@Param('vitalsId') addressId) {
     return await this.vitalsService.getUserVitalsById(addressId);
