@@ -35,7 +35,7 @@ export class FamiliesService {
     if (!family) throw new NotFoundException('Families record not found');
     return family;
   }
-  public async DeletePatientFamilies(familiesId: string) {
+  public async deletePatientFamilies(familiesId: string) {
     const family = await this.familiesModel.findById(familiesId);
     if (!family) throw new NotFoundException('Families record not found');
     await family.remove();

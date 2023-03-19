@@ -18,4 +18,4 @@ import { Patient, PatientSchema } from './schema/patient.schema';
   providers: [PatientService],
   exports: [PatientService, MongooseModule],
 })
-export class UserModule {}
+export class PatientModule {}

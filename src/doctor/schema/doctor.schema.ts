@@ -4,14 +4,10 @@ import {
   DoctorInterface,
   ProfessionalInformationInterface,
 } from '../interfaces/doctor.interface';
-const { ObjectId } = mongoose.Schema.Types;
 
 export type DoctorDocument = Doctor & Document;
 
-class ProfessionalInformation
-  extends Document
-  implements ProfessionalInformationInterface
-{
+class ProfessionalInformation implements ProfessionalInformationInterface {
   @Prop({ type: String, trim: true, required: true })
   category: string;
 

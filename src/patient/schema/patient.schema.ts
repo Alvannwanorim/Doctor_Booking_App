@@ -3,8 +3,11 @@ import { Document } from 'mongoose';
 import { PatientInterface } from '../interfaces/patient.interface';
 import { ROLES } from '../types/patient.types';
 import { VERIFICATION } from '../types/verification.types';
+import { MedicalHistory } from './medical-history.schema';
+import { Vitals } from './vitals.schema';
 
 export type PatientDocument = Patient & Document;
+
 @Schema({
   toJSON: {
     virtuals: true,
@@ -14,7 +17,7 @@ export type PatientDocument = Patient & Document;
   },
   timestamps: true,
 })
-export class Patient implements PatientInterface {
+export class Patient extends Document implements PatientInterface {
   _id: string;
 
   @Prop({ type: String, required: true, trim: true })
@@ -51,6 +54,12 @@ export class Patient implements PatientInterface {
   roles: ROLES;
   @Prop({ enum: VERIFICATION, default: VERIFICATION.PENDING })
   verification_status: VERIFICATION;
+
+  @Prop({ type: MedicalHistory })
+  medical_history: MedicalHistory;
+
+  @Prop({ type: Vitals })
+  vitals: Vitals;
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);
@@ -59,7 +68,7 @@ PatientSchema.virtual('id').get(function () {
   return this._id;
 });
 
-PatientSchema.virtual('userId').get(function () {
+PatientSchema.virtual('patientId').get(function () {
   return this._id;
 });
 

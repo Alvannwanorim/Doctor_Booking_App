@@ -20,7 +20,7 @@ export class FamiliesController {
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getUserFamilies(@Req() req) {
-    return await this.familiesService.getUserFamilies(req.user._id);
+    return await this.familiesService.getPatientFamilies(req.user._id);
   }
   @Post('')
   @UseGuards(JwtAuthGuard)
@@ -28,7 +28,7 @@ export class FamiliesController {
     @Body() familiesDto: FamiliesDto,
     @Req() req,
   ) {
-    return await this.familiesService.createUserFamilies(
+    return await this.familiesService.createPatientFamilies(
       familiesDto,
       req.user._id,
     );
@@ -39,7 +39,7 @@ export class FamiliesController {
     @Body() familiesDto: FamiliesDto,
     @Param('familiesId') familiesId,
   ) {
-    return await this.familiesService.updateUserFamilies(
+    return await this.familiesService.updatePatientFamilies(
       familiesDto,
       familiesId,
     );
@@ -47,11 +47,11 @@ export class FamiliesController {
   @Delete('/:familiesId')
   @UseGuards(JwtAuthGuard)
   public async DeleteUserFamilies(@Param('familiesId') familiesId) {
-    return await this.familiesService.DeleteUserFamilies(familiesId);
+    return await this.familiesService.deletePatientFamilies(familiesId);
   }
   @Get('/:familiesId')
   @UseGuards(JwtAuthGuard)
   public async getUserFamiliesById(@Param('familiesId') familiesId) {
-    return await this.familiesService.getUserFamiliesById(familiesId);
+    return await this.familiesService.getPatientFamiliesById(familiesId);
   }
 }

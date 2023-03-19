@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Put,
   Req,
@@ -17,33 +16,30 @@ import { VitalsService } from './vitals.service';
 export class VitalsController {
   constructor(private readonly vitalsService: VitalsService) {}
 
-  //vitals
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getUserVitals(@Req() req) {
-    return await this.vitalsService.getUserVitals(req.user._id);
+    return await this.vitalsService.getPatientVitals(req.user._id);
   }
   @Post('')
   @UseGuards(JwtAuthGuard)
-  public async createUserVitals(@Body() vitalsDto: VitalsDto, @Req() req) {
-    return await this.vitalsService.createUserVitals(vitalsDto, req.user._id);
+  public async createPatientVitals(@Body() vitalsDto: VitalsDto, @Req() req) {
+    return await this.vitalsService.createPatientVitals(
+      vitalsDto,
+      req.user._id,
+    );
   }
-  @Put('/:vitalsId')
+  @Put('/update')
   @UseGuards(JwtAuthGuard)
-  public async updateUserVitals(
-    @Body() vitalsDto: VitalsDto,
-    @Param('vitalsId') vitalsId,
-  ) {
-    return await this.vitalsService.updateUserVitals(vitalsDto, vitalsId);
+  public async updatePatientVitals(@Body() vitalsDto: VitalsDto, @Req() req) {
+    return await this.vitalsService.updatePatientVitals(
+      vitalsDto,
+      req.user._id,
+    );
   }
-  @Delete('/:vitalsId')
+  @Delete('')
   @UseGuards(JwtAuthGuard)
-  public async DeleteUserVitals(@Param('vitalsId') vitalsId) {
-    return await this.vitalsService.DeleteUserVitals(vitalsId);
-  }
-  @Get('/:vitalsId')
-  @UseGuards(JwtAuthGuard)
-  public async getUserVitalsById(@Param('vitalsId') addressId) {
-    return await this.vitalsService.getUserVitalsById(addressId);
+  public async DeletePatientVitals(@Req() req) {
+    return await this.vitalsService.DeletePatientVitals(req.user._id);
   }
 }

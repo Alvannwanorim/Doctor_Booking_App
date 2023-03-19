@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/schema/user.schema';
+import { Patient, PatientDocument } from 'src/patient/schema/patient.schema';
 import { MedicalHistoryDto } from '../medical-history/dto/medical-history.dto';
 import {
   MedicalHistory,
@@ -11,7 +11,7 @@ import {
 @Injectable()
 export class MedicalHistoryService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Patient.name) private userModel: Model<PatientDocument>,
     @InjectModel(MedicalHistory.name)
     private medicalHistoryModel: Model<MedicalHistoryDocument>,
   ) {}
