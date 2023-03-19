@@ -18,10 +18,10 @@ export class DeliveryAddress implements DeliveryAddressesInterface {
 
   @Prop({
     type: ObjectId,
-    required: [true, 'Provide a user id'],
+    required: [true, 'Provide a patient id'],
     immutable: false,
   })
-  user: mongoose.Schema.Types.ObjectId;
+  patient: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: String,

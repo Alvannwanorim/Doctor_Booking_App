@@ -1,7 +1,7 @@
 import { IsEmail, IsOptional, IsStrongPassword } from 'class-validator';
 import { IsPhoneNumber, IsString, MinLength } from 'class-validator';
 
-export class CreateUserDto {
+export class CreatePatientDto {
   @IsString()
   @MinLength(3)
   first_name: string;

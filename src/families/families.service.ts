@@ -1,44 +1,47 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/schema/user.schema';
+import { Patient, PatientDocument } from 'src/patient/schema/patient.schema';
 import { FamiliesDto } from '../families/dto/families.dto';
 import { Families, FamiliesDocument } from '../families/schema/families.schema';
 
 @Injectable()
 export class FamiliesService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Patient.name) private patientModel: Model<PatientDocument>,
     @InjectModel(Families.name)
     private familiesModel: Model<FamiliesDocument>,
   ) {}
 
-  public async createUserFamilies(familiesDto: FamiliesDto, userId: string) {
-    const user = await this.userModel.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+  public async createPatientFamilies(
+    familiesDto: FamiliesDto,
+    patientId: string,
+  ) {
+    const patient = await this.patientModel.findById(patientId);
+    if (!patient) throw new NotFoundException('patient not found');
     const newFamilies = new this.familiesModel({
-      user: userId,
+      patient: patientId,
       ...familiesDto,
     });
     await newFamilies.save();
     return newFamilies;
   }
-  public async getUserFamilies(userId: string) {
-    const families = await this.familiesModel.find({ user: userId });
+  public async getPatientFamilies(patientId: string) {
+    const families = await this.familiesModel.find({ patient: patientId });
     return families;
   }
-  public async getUserFamiliesById(familiesId: string) {
+  public async getPatientFamiliesById(familiesId: string) {
     const family = await this.familiesModel.findById(familiesId);
     if (!family) throw new NotFoundException('Families record not found');
     return family;
   }
-  public async DeleteUserFamilies(familiesId: string) {
+  public async DeletePatientFamilies(familiesId: string) {
     const family = await this.familiesModel.findById(familiesId);
     if (!family) throw new NotFoundException('Families record not found');
     await family.remove();
     return family;
   }
-  public async updateUserFamilies(
+  public async updatePatientFamilies(
     familiesDto: FamiliesDto,
     familiesId: string,
   ) {

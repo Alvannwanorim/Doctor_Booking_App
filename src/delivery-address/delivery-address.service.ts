@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/schema/user.schema';
+import { Patient, PatientDocument } from 'src/patient/schema/patient.schema';
 import { AddressDto } from './dto/address.dto';
 import {
   DeliveryAddress,
@@ -11,23 +11,23 @@ import {
 @Injectable()
 export class DeliveryAddressService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Patient.name) private patientModel: Model<PatientDocument>,
     @InjectModel(DeliveryAddress.name)
     private addressModel: Model<DeliveryAddressDocument>,
   ) {}
 
-  public async createUserAddress(addressDto: AddressDto, userId: string) {
-    const user = await this.userModel.findById(userId);
+  public async createUserAddress(addressDto: AddressDto, patientId: string) {
+    const user = await this.patientModel.findById(patientId);
     if (!user) throw new NotFoundException('User not found');
 
-    const address = new this.addressModel({ user: user._id, ...addressDto });
+    const address = new this.addressModel({ patient: user._id, ...addressDto });
     await address.save();
     return address;
   }
-  public async getUserAddress(userId: string) {
-    const id = new mongoose.Types.ObjectId(userId);
+  public async getUserAddress(patientId: string) {
+    const id = new mongoose.Types.ObjectId(patientId);
 
-    const addresses = await this.addressModel.find({ user: id });
+    const addresses = await this.addressModel.find({ patient: id });
     return addresses;
   }
   public async getUserAddressById(addressId: string) {

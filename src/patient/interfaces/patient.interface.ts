@@ -1,7 +1,7 @@
-import { ROLES } from '../types/user.types';
+import { ROLES } from '../types/patient.types';
 import { VERIFICATION } from '../types/verification.types';
 
-export interface UserInterface {
+export interface PatientInterface {
   first_name: string;
   last_name: string;
   email: string;

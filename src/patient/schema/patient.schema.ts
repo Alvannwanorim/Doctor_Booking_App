@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UserInterface } from '../interfaces/user.interface';
-import { ROLES } from '../types/user.types';
+import { PatientInterface } from '../interfaces/patient.interface';
+import { ROLES } from '../types/patient.types';
 import { VERIFICATION } from '../types/verification.types';
 
-export type UserDocument = User & Document;
+export type PatientDocument = Patient & Document;
 @Schema({
   toJSON: {
     virtuals: true,
@@ -14,7 +14,7 @@ export type UserDocument = User & Document;
   },
   timestamps: true,
 })
-export class User implements UserInterface {
+export class Patient implements PatientInterface {
   _id: string;
 
   @Prop({ type: String, required: true, trim: true })
@@ -53,17 +53,17 @@ export class User implements UserInterface {
   verification_status: VERIFICATION;
 }
 
-export const USerSchema = SchemaFactory.createForClass(User);
+export const PatientSchema = SchemaFactory.createForClass(Patient);
 
-USerSchema.virtual('id').get(function () {
+PatientSchema.virtual('id').get(function () {
   return this._id;
 });
 
-USerSchema.virtual('userId').get(function () {
+PatientSchema.virtual('userId').get(function () {
   return this._id;
 });
 
-USerSchema.methods.toJSON = function () {
+PatientSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj._id;
   delete obj._v;

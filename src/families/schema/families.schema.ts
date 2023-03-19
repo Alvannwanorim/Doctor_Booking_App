@@ -21,7 +21,7 @@ export class Families implements FamiliesInterface {
     required: [true, 'Provide a user id'],
     immutable: false,
   })
-  user: mongoose.Schema.Types.ObjectId;
+  patient: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: String,

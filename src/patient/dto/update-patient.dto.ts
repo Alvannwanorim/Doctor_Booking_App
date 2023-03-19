@@ -1,23 +1,23 @@
 import { IsDateString, IsEmail, IsNotEmpty } from 'class-validator';
 import { IsPhoneNumber, IsString, MinLength } from 'class-validator';
 
-export class UpdateUserDto {
+export class UpdatePatientDto {
   @IsString()
   @MinLength(3)
-  firstName: string;
+  first_name: string;
 
   @IsString()
   @MinLength(3)
-  lastName: string;
+  last_name: string;
 
   @IsPhoneNumber('NG')
-  phoneNumber: string;
+  phone_number: string;
 
   @IsEmail()
   email: string;
 
   @IsDateString()
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @IsString()
   @IsNotEmpty()
