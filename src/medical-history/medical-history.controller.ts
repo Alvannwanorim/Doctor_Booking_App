@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Put,
   Req,
@@ -21,7 +20,9 @@ export class MedicalHistoryController {
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getUserMedicalHistories(@Req() req) {
-    return await this.medicalHistoryService.getUserMedicalHistory(req.user._id);
+    return await this.medicalHistoryService.getPatientMedicalHistory(
+      req.user._id,
+    );
   }
   @Post('')
   @UseGuards(JwtAuthGuard)
@@ -29,38 +30,27 @@ export class MedicalHistoryController {
     @Body() medicalHistoryDto: MedicalHistoryDto,
     @Req() req,
   ) {
-    return await this.medicalHistoryService.createUserMedicalHistory(
+    return await this.medicalHistoryService.createPatientMedicalHistory(
       medicalHistoryDto,
       req.user._id,
     );
   }
-  @Put('/:medicalHistoryId')
+  @Put('/update')
   @UseGuards(JwtAuthGuard)
   public async updateUserMedicalHistory(
     @Body() medicalHistoryDto: MedicalHistoryDto,
-    @Param('medicalHistoryId') medicalHistoryId,
+    @Req() req,
   ) {
-    return await this.medicalHistoryService.updateUserMedicalHistory(
+    return await this.medicalHistoryService.updatePatientMedicalHistory(
       medicalHistoryDto,
-      medicalHistoryId,
+      req.user._id,
     );
   }
-  @Delete('/:medicalHistoryId')
+  @Delete('')
   @UseGuards(JwtAuthGuard)
-  public async DeleteUserMedicalHistory(
-    @Param('medicalHistoryId') medicalHistoryId,
-  ) {
-    return await this.medicalHistoryService.DeleteUserMedicalHistory(
-      medicalHistoryId,
-    );
-  }
-  @Get('/:medicalHistoryId')
-  @UseGuards(JwtAuthGuard)
-  public async getUserMedicalHistoryById(
-    @Param('medicalHistoryId') medicalHistoryId,
-  ) {
-    return await this.medicalHistoryService.getUserMedicalHistoryById(
-      medicalHistoryId,
+  public async DeleteUserMedicalHistory(@Req() req) {
+    return await this.medicalHistoryService.deletePatientMedicalHistory(
+      req.user._id,
     );
   }
 }
