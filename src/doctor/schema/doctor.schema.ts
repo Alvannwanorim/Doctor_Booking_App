@@ -1,7 +1,26 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import {
+  DoctorInterface,
+  ProfessionalInformationInterface,
+} from '../interfaces/doctor.interface';
 const { ObjectId } = mongoose.Schema.Types;
+
 export type DoctorDocument = Doctor & Document;
+
+class ProfessionalInformation
+  extends Document
+  implements ProfessionalInformationInterface
+{
+  @Prop({ type: String, trim: true, required: true })
+  category: string;
+
+  @Prop({ type: String, trim: true, required: true })
+  experience: string;
+
+  @Prop({ type: String, trim: true, required: true })
+  professional_status: string;
+}
 @Schema({
   toJSON: {
     virtuals: true,
@@ -11,19 +30,26 @@ export type DoctorDocument = Doctor & Document;
   },
   timestamps: true,
 })
-export class Doctor {
-  _id: string;
+export class Doctor extends Document implements DoctorInterface {
+  _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop({
-    type: ObjectId,
-    unique: true,
-    required: [true, 'Provide a user id'],
-    immutable: false,
-  })
-  details: string;
+  @Prop({ type: String, trim: true, required: true })
+  first_name: string;
 
-  @Prop({ type: Date, trim: true })
-  dateOfBirth: string;
+  @Prop({ type: String, trim: true, required: true })
+  last_name: string;
+
+  @Prop({ type: String, trim: true, required: true, unique: true })
+  email: string;
+
+  @Prop({ type: String, trim: true, required: true, unique: true })
+  phone_number: string;
+
+  @Prop({ type: String, trim: true, required: true })
+  password: string;
+
+  @Prop({ type: String, trim: true })
+  date_of_birth: string;
 
   @Prop({ type: String, trim: true })
   gender: string;
@@ -37,14 +63,8 @@ export class Doctor {
   @Prop({ type: String, trim: true })
   address: string;
 
-  @Prop({ type: String, trim: true })
-  category: string;
-
-  @Prop({ type: String, trim: true })
-  experience: string;
-
-  @Prop({ type: String, trim: true })
-  professional_status: string;
+  @Prop({ type: ProfessionalInformation })
+  professional_experience: ProfessionalInformation;
 }
 
 export const DoctorSchema = SchemaFactory.createForClass(Doctor);

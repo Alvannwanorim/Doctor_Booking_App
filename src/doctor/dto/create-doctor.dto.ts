@@ -1,33 +1,50 @@
+import { Type } from 'class-transformer';
 import {
   IsDateString,
+  IsDefined,
   IsEmail,
   IsNotEmpty,
+  IsObject,
   IsPhoneNumber,
   IsString,
   IsStrongPassword,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { DoctorInterface } from '../interfaces/doctor.interface';
+export class ProfessionalExperienceDto {
+  @IsString()
+  @IsNotEmpty()
+  category: string;
 
-export class CreateDoctorDto {
+  @IsString()
+  @IsNotEmpty()
+  experience: string;
+
+  @IsString()
+  @IsNotEmpty()
+  professional_status: string;
+}
+export class CreateDoctorDto implements DoctorInterface {
   @IsString()
   @MinLength(3)
-  firstName: string;
+  first_name: string;
 
   @IsString()
   @MinLength(3)
-  lastName: string;
+  last_name: string;
 
   @IsEmail()
   email: string;
 
   @IsPhoneNumber('NG')
-  phoneNumber: string;
+  phone_number: string;
 
   @IsStrongPassword()
   password: string;
 
   @IsDateString()
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @IsString()
   @IsNotEmpty()
@@ -45,15 +62,9 @@ export class CreateDoctorDto {
   @IsNotEmpty()
   address: string;
 
-  @IsString()
-  @IsNotEmpty()
-  category: string;
-
-  @IsString()
-  @IsNotEmpty()
-  experience: string;
-
-  @IsString()
-  @IsNotEmpty()
-  professional_status: string;
+  @IsObject()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => ProfessionalExperienceDto)
+  professional_experience: ProfessionalExperienceDto;
 }
