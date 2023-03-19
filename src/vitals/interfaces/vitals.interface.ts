@@ -1,5 +1,6 @@
 export interface VitalsInterface {
   height: string;
   weight: string;
-  bloodSugar?: string;
+  blood_sugar?: string;
+  blood_pressure?: string;
 }

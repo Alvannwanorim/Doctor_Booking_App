@@ -33,13 +33,13 @@ export class Families implements FamiliesInterface {
     type: String,
     trim: true,
   })
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @Prop({
     type: String,
     trim: true,
   })
-  phoneNumber: string;
+  phone_number: string;
 
   @Prop({
     type: String,

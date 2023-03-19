@@ -13,7 +13,6 @@ import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { GoogleAuthDto } from 'src/auth/dto/google-auth.dto';
 import { VERIFICATION } from './types/verification.types';
-import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { ROLES } from './types/user.types';
 import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 import { PhoneNumberDto } from './dto/phone-number.dto';
@@ -46,7 +45,7 @@ export class UserService {
       );
 
     const exitingPhoneNumber = await this.userModel.findOne({
-      phoneNumber: userDto.phoneNumber,
+      phone_number: userDto.phone_number,
     });
     if (exitingPhoneNumber)
       throw new HttpException(
@@ -91,42 +90,16 @@ export class UserService {
   public async createUserByGoogleAuth(googleData: GoogleAuthDto) {
     const user = await this.userModel.findOne({ email: googleData.email });
     if (user) {
-      user.verificationStatus = VERIFICATION.VERIFIED;
+      user.verification_status = VERIFICATION.VERIFIED;
       await user.save();
       return user;
     }
     const newUser = new this.userModel({
-      verificationStatus: VERIFICATION.VERIFIED,
+      verification_status: VERIFICATION.VERIFIED,
       ...googleData,
     });
     await newUser.save();
     return newUser;
-  }
-
-  public async registerDoctor(createDoctorDto: CreateDoctorDto) {
-    const user = await this.register({
-      firstName: createDoctorDto.firstName,
-      lastName: createDoctorDto.lastName,
-      email: createDoctorDto.email,
-      password: createDoctorDto.password,
-      phoneNumber: createDoctorDto.phoneNumber,
-      roles: ROLES.DOCTOR,
-    });
-    if (user) {
-      const doctor = new this.doctorModel({
-        userId: user._id,
-        dateOfBirth: createDoctorDto.dateOfBirth,
-        gender: createDoctorDto.gender,
-        country: createDoctorDto.country,
-        state: createDoctorDto.state,
-        address: createDoctorDto.address,
-        category: createDoctorDto.category,
-        experience: createDoctorDto.experience,
-        professional_status: createDoctorDto.professional_status,
-      });
-      await doctor.save();
-      return user;
-    }
   }
 
   public async updatePhoneNumber(
@@ -138,7 +111,7 @@ export class UserService {
       throw new NotFoundException('user not found');
     }
     const existingPhoneNumber = await this.userModel.findOne({
-      phoneNumber: phoneNumberDto.phoneNumber,
+      phone_number: phoneNumberDto.phone_number,
     });
     if (existingPhoneNumber && existingPhoneNumber._id !== user._id) {
       throw new BadRequestException(
@@ -147,7 +120,7 @@ export class UserService {
     } else if (existingPhoneNumber && existingPhoneNumber._id === user._id) {
       return user;
     }
-    user.phoneNumber = phoneNumberDto.phoneNumber;
+    user.phone_number = phoneNumberDto.phone_number;
     await user.save();
     return user;
   }

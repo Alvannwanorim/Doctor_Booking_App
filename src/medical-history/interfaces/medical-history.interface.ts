@@ -1,5 +1,5 @@
 export interface MedicalHistoryInterface {
-  previousTreatment: string;
-  currentMedication: string;
-  drugOrFoodAllergies: string;
+  previous_treatment: string;
+  current_medication: string;
+  drug_or_food_allergies: string;
 }

@@ -12,10 +12,10 @@ export class FamiliesDto implements FamiliesInterface {
   name: string;
 
   @IsPhoneNumber('NG')
-  phoneNumber: string;
+  phone_number: string;
 
   @IsDateString()
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @IsString()
   @IsNotEmpty()

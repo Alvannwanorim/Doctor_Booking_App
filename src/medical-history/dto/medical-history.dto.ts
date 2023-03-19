@@ -4,13 +4,13 @@ import { MedicalHistoryInterface } from '../interfaces/medical-history.interface
 export class MedicalHistoryDto implements MedicalHistoryInterface {
   @IsString()
   @IsNotEmpty()
-  previousTreatment: string;
+  previous_treatment: string;
 
   @IsString()
   @IsNotEmpty()
-  currentMedication: string;
+  current_medication: string;
 
   @IsString()
   @IsNotEmpty()
-  drugOrFoodAllergies: string;
+  drug_or_food_allergies: string;
 }

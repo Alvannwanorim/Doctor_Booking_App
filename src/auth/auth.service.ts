@@ -110,8 +110,8 @@ export class AuthService {
   }
 
   public async registerDoctor(createDoctorDto: CreateDoctorDto): Promise<User> {
-    const doctor = await this.userService.registerDoctor(createDoctorDto);
-    return doctor;
+    // const doctor = await this.userService.registerDoctor(createDoctorDto);
+    return;
   }
 
   public async updateDoctor(

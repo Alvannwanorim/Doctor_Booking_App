@@ -39,7 +39,13 @@ export class Vitals implements VitalsInterface {
     type: String,
     trim: true,
   })
-  bloodSugar: string;
+  blood_sugar: string;
+
+  @Prop({
+    type: String,
+    trim: true,
+  })
+  blood_pressure: string;
 }
 
 export const VitalsSchema = SchemaFactory.createForClass(Vitals);

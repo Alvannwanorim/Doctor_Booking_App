@@ -12,5 +12,8 @@ export class VitalsDto implements VitalsInterface {
   weight: string;
 
   @Optional()
-  bloodSugar: string;
+  blood_sugar: string;
+
+  @Optional()
+  blood_pressure: string;
 }

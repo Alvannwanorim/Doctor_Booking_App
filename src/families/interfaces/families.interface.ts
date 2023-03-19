@@ -1,7 +1,7 @@
 export interface FamiliesInterface {
   name: string;
-  phoneNumber: string;
-  dateOfBirth: string;
+  phone_number: string;
+  date_of_birth: string;
   relationship: string;
   gender: string;
 }

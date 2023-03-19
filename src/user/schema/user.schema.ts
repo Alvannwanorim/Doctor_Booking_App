@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { UserInterface } from '../interfaces/user.interface';
 import { ROLES } from '../types/user.types';
 import { VERIFICATION } from '../types/verification.types';
 
@@ -13,26 +14,26 @@ export type UserDocument = User & Document;
   },
   timestamps: true,
 })
-export class User {
+export class User implements UserInterface {
   _id: string;
 
   @Prop({ type: String, required: true, trim: true })
-  firstName: string;
+  first_name: string;
 
   @Prop({ type: String, required: true, trim: true })
-  lastName: string;
+  last_name: string;
 
   @Prop({ type: String, required: true, trim: true, unique: true })
   email: string;
 
   @Prop({ trim: true, unique: true })
-  phoneNumber: string;
+  phone_number: string;
 
   @Prop({ type: String, trim: true })
   password: string;
 
   @Prop({ type: String, trim: true })
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @Prop({ type: String, trim: true })
   gender: string;
@@ -49,7 +50,7 @@ export class User {
   @Prop({ enum: ROLES, default: ROLES.PATIENT })
   roles: ROLES;
   @Prop({ enum: VERIFICATION, default: VERIFICATION.PENDING })
-  verificationStatus: VERIFICATION;
+  verification_status: VERIFICATION;
 }
 
 export const USerSchema = SchemaFactory.createForClass(User);

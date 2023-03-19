@@ -27,19 +27,19 @@ export class MedicalHistory implements MedicalHistoryInterface {
     type: String,
     trim: true,
   })
-  previousTreatment: string;
+  previous_treatment: string;
 
   @Prop({
     type: String,
     trim: true,
   })
-  currentMedication: string;
+  current_medication: string;
 
   @Prop({
     type: String,
     trim: true,
   })
-  drugOrFoodAllergies: string;
+  drug_or_food_allergies: string;
 }
 
 export const MedicalHistorySchema =
