@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt/dist';
 import { PassportModule } from '@nestjs/passport/dist';
 import { DoctorModule } from 'src/doctor/doctor.module';
-import { UserModule } from 'src/user/user.module';
+import { PatientModule } from 'src/patient/patient.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local.guard';
@@ -18,7 +18,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '3600s' },
     }),
-    UserModule,
+    PatientModule,
     DoctorModule,
   ],
   controllers: [AuthController],

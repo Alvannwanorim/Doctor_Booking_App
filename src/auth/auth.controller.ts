@@ -7,11 +7,10 @@ import {
   Get,
   Put,
 } from '@nestjs/common';
-import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { DoctorDto } from 'src/doctor/dto/doctor.dto';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { User } from 'src/user/schema/user.schema';
-import { ROLES } from 'src/user/types/user.types';
+import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
+import { Patient } from 'src/patient/schema/patient.schema';
+import { ROLES } from 'src/patient/types/patient.types';
 import { AuthService } from './auth.service';
 import { Roles } from './decorators/roles.decorator';
 import { GoogleAuthDto } from './dto/google-auth.dto';
@@ -25,20 +24,22 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('user/register')
-  public async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+  public async createUser(
+    @Body() createUserDto: CreatePatientDto,
+  ): Promise<Patient> {
     return await this.authService.register(createUserDto);
   }
-  @Post('doctor/register')
-  public async createDoctor(
-    @Body() createDoctorDto: CreateDoctorDto,
-  ): Promise<User> {
-    return await this.authService.registerDoctor(createDoctorDto);
-  }
+  // @Post('doctor/register')
+  // public async createDoctor(
+  //   @Body() createDoctorDto: CreateDoctorDto,
+  // ): Promise<User> {
+  //   return await this.authService.registerDoctor(createDoctorDto);
+  // }
 
   @UseGuards(LocalAuthGuard)
   @Post('user/login')
   public async login(@Req() req) {
-    return await this.authService.loginUser(req.user);
+    return await this.authService.loginPatient(req.user);
   }
   @UseGuards(LocalAuthGuard)
   @Post('doctor/login')
@@ -69,13 +70,13 @@ export class AuthController {
       firstName: String(usersDetails.given_name),
       lastName: String(usersDetails.given_name),
     };
-    return this.authService.createUserByGoogleAuth(googleData);
+    return this.authService.createPatientByGoogleAuth(googleData);
   }
 
   @Get('/current-user')
   @UseGuards(JwtAuthGuard)
   public async getCurrentUser(@Req() req) {
-    return await this.authService.getCurrentUser(req.user._id);
+    return await this.authService.getCurrentPatient(req.user._id);
   }
 
   @Roles(ROLES.DOCTOR)

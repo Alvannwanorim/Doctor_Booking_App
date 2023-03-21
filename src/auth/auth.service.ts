@@ -4,80 +4,84 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/user/schema/user.schema';
-import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UpdatePasswordDto } from 'src/user/dto/update-password.dto';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 import { JwtDto } from './dto/jwt.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
 import { DoctorService } from 'src/doctor/doctor.service';
-import { ROLES } from 'src/user/types/user.types';
 import { DoctorDto } from 'src/doctor/dto/doctor.dto';
 import { Doctor } from 'src/doctor/schema/doctor.schema';
+import { PatientService } from 'src/patient/patient.service';
+import { Patient } from 'src/patient/schema/patient.schema';
+import { ROLES } from 'src/patient/types/patient.types';
+import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
+import { UpdatePasswordDto } from 'src/patient/dto/update-password.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private patientService: PatientService,
     private doctorService: DoctorService,
     private readonly jwtService: JwtService,
   ) {}
 
   /**
-   * @description Fetches user records from the database
+   * @description Fetches patient records from the database
    * @param email
    * @param password
-   * @returns `User`
+   * @returns `patient`
    */
-  public async validate(email: string, password: string): Promise<User | null> {
-    const user = await this.userService.validateUser(email);
-    if (!user) {
+  public async validate(
+    email: string,
+    password: string,
+  ): Promise<Patient | null> {
+    const patient = await this.patientService.validatePatient(email);
+    if (!patient) {
       return null;
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw new BadRequestException('Incorrect user credentials');
-    return user;
+    const isMatch = await bcrypt.compare(password, patient.password);
+    if (!isMatch)
+      throw new BadRequestException('Incorrect patient credentials');
+    return patient;
   }
 
   /**
-   * @description Fetches user records from the database
+   * @description Fetches patient records from the database
    * @param email
    * @param password
-   * @returns `User`
+   * @returns `patient`
    */
-  public async validateByEmail(email: string): Promise<User | null> {
-    const user = await this.userService.validateUser(email);
-    if (!user) {
+  public async validateByEmail(email: string): Promise<Patient | null> {
+    const patient = await this.patientService.validatePatient(email);
+    if (!patient) {
       return null;
     }
-    return user;
+    return patient;
   }
 
   /**
-   * @description generates `access_token` for a verified user
-   * @param user of type `User`
+   * @description generates `access_token` for a verified patient
+   * @param patient of type `patient`
    * @returns `access_token`
    */
-  async loginUser(user: User): Promise<{ access_token: string }> {
-    if (user.roles !== ROLES.PATIENT) {
+  async loginPatient(patient: Patient): Promise<{ access_token: string }> {
+    if (patient.roles !== ROLES.PATIENT) {
       throw new UnauthorizedException();
     }
     const payload: JwtDto = {
-      email: user.email,
-      sub: user._id,
+      email: patient.email,
+      sub: patient._id,
     };
     const access_token = this.signToken(payload);
     return { access_token };
   }
-  async loginDoctor(user: User): Promise<{ access_token: string }> {
-    if (user.roles !== ROLES.DOCTOR) {
+  async loginDoctor(patient: Patient): Promise<{ access_token: string }> {
+    if (patient.roles !== ROLES.DOCTOR) {
       throw new UnauthorizedException();
     }
     const payload: JwtDto = {
-      email: user.email,
-      sub: user._id,
+      email: patient.email,
+      sub: patient._id,
     };
     const access_token = this.signToken(payload);
     return { access_token };
@@ -91,38 +95,42 @@ export class AuthService {
   }
 
   /**
-   * Save user information to database
-   * @param userDto docs to be saved. Must not be `CreateUserDto`
-   * @returns `User`
+   * Save patient information to database
+   * @param patientDto docs to be saved. Must not be `CreatepatientDto`
+   * @returns `patient`
    * @author Alvan
    */
-  public async register(createUserDto: CreateUserDto): Promise<User> {
-    return await this.userService.register(createUserDto);
+  public async register(createPatientDto: CreatePatientDto): Promise<Patient> {
+    return await this.patientService.register(createPatientDto);
   }
 
   public async updatePassword(updatePasswordDto: UpdatePasswordDto) {
-    return await this.userService.updatePassword(updatePasswordDto);
+    return await this.patientService.updatePassword(updatePasswordDto);
   }
 
-  public async createUserByGoogleAuth(googleData: GoogleAuthDto) {
-    const user = await this.userService.createUserByGoogleAuth(googleData);
-    return this.loginUser(user);
+  public async createPatientByGoogleAuth(googleData: GoogleAuthDto) {
+    const patient = await this.patientService.createPatientByGoogleAuth(
+      googleData,
+    );
+    return this.loginPatient(patient);
   }
 
-  public async registerDoctor(createDoctorDto: CreateDoctorDto): Promise<User> {
-    const doctor = await this.userService.registerDoctor(createDoctorDto);
-    return doctor;
-  }
+  // public async registerDoctor(
+  //   createDoctorDto: CreateDoctorDto,
+  // ): Promise<patient> {
+  //   // const doctor = await this.patientService.registerDoctor(createDoctorDto);
+  //   return;
+  // }
 
   public async updateDoctor(
-    userId: string,
+    patientId: string,
     doctorDto: DoctorDto,
   ): Promise<Doctor> {
-    const doctor = await this.userService.updateDoctor(userId, doctorDto);
+    const doctor = await this.patientService.updateDoctor(patientId, doctorDto);
     return doctor;
   }
 
-  public getCurrentUser(userId: string) {
-    return this.userService.getCurrentUser(userId);
+  public getCurrentPatient(patientId: string) {
+    return this.patientService.getCurrentPatient(patientId);
   }
 }
