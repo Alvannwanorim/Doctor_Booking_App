@@ -11,6 +11,8 @@ import { VitalsModule } from './vitals/vitals.module';
 import { FamiliesModule } from './families/families.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -38,6 +40,11 @@ import { PatientModule } from './patient/patient.module';
     MedicalHistoryModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

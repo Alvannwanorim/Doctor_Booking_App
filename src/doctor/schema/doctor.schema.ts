@@ -63,6 +63,9 @@ export class Doctor extends Document implements DoctorInterface {
   @Prop({ type: Number, trim: true, default: 0 })
   consultation_fee: number;
 
+  @Prop({ type: Number, trim: true, default: 0 })
+  rating: number;
+
   @Prop({ enum: DOCTOR_STATUS, default: DOCTOR_STATUS.PENDING })
   status: DOCTOR_STATUS;
 
