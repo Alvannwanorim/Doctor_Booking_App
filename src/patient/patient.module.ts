@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DoctorModule } from 'src/doctor/doctor.module';
 import { Doctor, DoctorSchema } from 'src/doctor/schema/doctor.schema';
+import { UsersModule } from 'src/users/users.module';
 import { PatientController } from './patient.controller';
 import { PatientService } from './patient.service';
 import { Patient, PatientSchema } from './schema/patient.schema';
@@ -12,7 +12,7 @@ import { Patient, PatientSchema } from './schema/patient.schema';
       { name: Patient.name, schema: PatientSchema },
       { name: Doctor.name, schema: DoctorSchema },
     ]),
-    DoctorModule,
+    UsersModule,
   ],
   controllers: [PatientController],
   providers: [PatientService],

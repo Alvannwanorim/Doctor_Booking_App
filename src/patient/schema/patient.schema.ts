@@ -1,8 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { PatientInterface } from '../interfaces/patient.interface';
-import { ROLES } from '../types/patient.types';
-import { VERIFICATION } from '../types/verification.types';
 import { MedicalHistory } from './medical-history.schema';
 import { Vitals } from './vitals.schema';
 
@@ -33,9 +31,6 @@ export class Patient extends Document implements PatientInterface {
   phone_number: string;
 
   @Prop({ type: String, trim: true })
-  password: string;
-
-  @Prop({ type: String, trim: true })
   date_of_birth: string;
 
   @Prop({ type: String, trim: true })
@@ -49,11 +44,6 @@ export class Patient extends Document implements PatientInterface {
 
   @Prop({ type: String, trim: true })
   address: string;
-
-  @Prop({ enum: ROLES, default: ROLES.PATIENT })
-  roles: ROLES;
-  @Prop({ enum: VERIFICATION, default: VERIFICATION.PENDING })
-  verification_status: VERIFICATION;
 
   @Prop({ type: MedicalHistory })
   medical_history: MedicalHistory;

@@ -42,9 +42,6 @@ export class Doctor extends Document implements DoctorInterface {
   @Prop({ type: String, trim: true, required: true, unique: true })
   phone_number: string;
 
-  @Prop({ type: String, trim: true, required: true })
-  password: string;
-
   @Prop({ type: String, trim: true })
   date_of_birth: string;
 

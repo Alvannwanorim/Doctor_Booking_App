@@ -13,6 +13,7 @@ import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { RolesGuard } from './auth/guards/roles.guard';
     VitalsModule,
     FamiliesModule,
     MedicalHistoryModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [

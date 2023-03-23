@@ -9,7 +9,6 @@ export interface DoctorInterface {
   last_name: string;
   email: string;
   phone_number: string;
-  password: string;
   date_of_birth: string;
   gender: string;
   country: string;
