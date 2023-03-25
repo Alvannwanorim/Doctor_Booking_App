@@ -25,7 +25,7 @@ export class UsersService {
       throw new HttpException(
         {
           status: HttpStatus.FORBIDDEN,
-          error: 'patient already exist',
+          error: 'email already exist',
         },
         HttpStatus.FORBIDDEN,
       );

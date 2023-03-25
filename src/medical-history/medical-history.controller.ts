@@ -21,7 +21,7 @@ export class MedicalHistoryController {
   @UseGuards(JwtAuthGuard)
   public async getUserMedicalHistories(@Req() req) {
     return await this.medicalHistoryService.getPatientMedicalHistory(
-      req.user._id,
+      req.user.email,
     );
   }
   @Post('')
@@ -32,7 +32,7 @@ export class MedicalHistoryController {
   ) {
     return await this.medicalHistoryService.createPatientMedicalHistory(
       medicalHistoryDto,
-      req.user._id,
+      req.user.email,
     );
   }
   @Put('/update')
@@ -43,14 +43,14 @@ export class MedicalHistoryController {
   ) {
     return await this.medicalHistoryService.updatePatientMedicalHistory(
       medicalHistoryDto,
-      req.user._id,
+      req.user.email,
     );
   }
   @Delete('')
   @UseGuards(JwtAuthGuard)
   public async DeleteUserMedicalHistory(@Req() req) {
     return await this.medicalHistoryService.deletePatientMedicalHistory(
-      req.user._id,
+      req.user.email,
     );
   }
 }

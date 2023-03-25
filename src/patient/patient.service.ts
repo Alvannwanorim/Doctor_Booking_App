@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -30,12 +32,23 @@ export class PatientService {
   public async register(patientDto: CreatePatientDto): Promise<Patient | null> {
     const userData: UserDto = {
       email: patientDto.email,
-      phone_number: patientDto.password,
+      phone_number: patientDto.phone_number,
       first_name: patientDto.first_name,
       last_name: patientDto.last_name,
       password: patientDto.password,
       roles: ROLES.PATIENT,
     };
+    const existingPatient = await this.patientModel.findOne({
+      email: patientDto.email,
+    });
+    if (existingPatient)
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'email already exist',
+        },
+        HttpStatus.FORBIDDEN,
+      );
     const newUser = await this.userService.createUser(userData);
     if (newUser) {
       delete patientDto.password;
@@ -98,8 +111,8 @@ export class PatientService {
     const patients = await this.patientModel.find({});
     return patients;
   }
-  public async updatePatient(patientData: UpdatePatientDto, patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async updatePatient(patientData: UpdatePatientDto, email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) {
       throw new NotFoundException('patient not found');
     }
@@ -112,7 +125,7 @@ export class PatientService {
           'This email is already in use by another patient',
         );
       const updatedPatient = await this.patientModel.findByIdAndUpdate(
-        { _id: patientId },
+        { _id: patient._id },
         { verificationStatus: VERIFICATION.PENDING, ...patientData },
         { new: true },
       );
@@ -127,7 +140,7 @@ export class PatientService {
           'This phone number is already in use by another patient',
         );
       const updatedPatient = await this.patientModel.findByIdAndUpdate(
-        { _id: patientId },
+        { _id: patient._id },
         { verificationStatus: VERIFICATION.PENDING, ...patientData },
         { new: true },
       );
@@ -135,7 +148,7 @@ export class PatientService {
       return updatedPatient;
     } else {
       const updatedPatient = await this.patientModel.findByIdAndUpdate(
-        { _id: patientId },
+        { _id: patient._id },
         { ...patientData },
         { new: true },
       );

@@ -18,7 +18,7 @@ import { PatientService } from './patient.service';
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 
-  @Post()
+  @Post('register')
   public async createPatient(@Body() createPatientDto: CreatePatientDto) {
     return await this.patientService.register(createPatientDto);
   }
@@ -41,6 +41,6 @@ export class PatientController {
   @Put('/update')
   @UseGuards(JwtAuthGuard)
   public async UpdateUser(@Body() patientData: UpdatePatientDto, @Req() req) {
-    return await this.patientService.updatePatient(patientData, req.user._id);
+    return await this.patientService.updatePatient(patientData, req.user.email);
   }
 }
