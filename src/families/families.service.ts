@@ -13,21 +13,18 @@ export class FamiliesService {
     private familiesModel: Model<FamiliesDocument>,
   ) {}
 
-  public async createPatientFamilies(
-    familiesDto: FamiliesDto,
-    patientId: string,
-  ) {
-    const patient = await this.patientModel.findById(patientId);
+  public async createPatientFamilies(familiesDto: FamiliesDto, email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) throw new NotFoundException('patient not found');
     const newFamilies = new this.familiesModel({
-      patient: patientId,
+      patient: patient._id,
       ...familiesDto,
     });
     await newFamilies.save();
     return newFamilies;
   }
-  public async getPatientFamilies(patientId: string) {
-    const families = await this.familiesModel.find({ patient: patientId });
+  public async getPatientFamilies(email: string) {
+    const families = await this.familiesModel.find({ email });
     return families;
   }
   public async getPatientFamiliesById(familiesId: string) {

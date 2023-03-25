@@ -20,7 +20,7 @@ export class FamiliesController {
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getUserFamilies(@Req() req) {
-    return await this.familiesService.getPatientFamilies(req.user._id);
+    return await this.familiesService.getPatientFamilies(req.user.email);
   }
   @Post('')
   @UseGuards(JwtAuthGuard)
@@ -30,7 +30,7 @@ export class FamiliesController {
   ) {
     return await this.familiesService.createPatientFamilies(
       familiesDto,
-      req.user._id,
+      req.user.email,
     );
   }
   @Put('/:familiesId')
