@@ -1,7 +1,7 @@
 import { Injectable, CanActivate } from '@nestjs/common';
 import { ExecutionContext } from '@nestjs/common/interfaces';
 import { Reflector } from '@nestjs/core';
-import { ROLES } from 'src/patient/types/patient.types';
+import { ROLES } from 'src/users/types/user.type';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()

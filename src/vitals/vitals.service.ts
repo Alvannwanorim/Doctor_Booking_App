@@ -10,31 +10,31 @@ export class VitalsService {
     @InjectModel(Patient.name) private patientModel: Model<PatientDocument>,
   ) {}
 
-  public async createPatientVitals(vitalsDto: VitalsDto, patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async createPatientVitals(vitalsDto: VitalsDto, email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) throw new NotFoundException('patient not found');
     patient.vitals = { ...vitalsDto };
     await patient.save();
     return patient.vitals;
   }
-  public async getPatientVitals(patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async getPatientVitals(email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient.vitals)
       throw new NotFoundException('patient vitals not found');
-    patient.vitals;
+    return patient.vitals;
   }
 
-  public async DeletePatientVitals(patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async DeletePatientVitals(email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient.vitals)
       throw new NotFoundException('patient vitals not found');
     const vitals = patient.vitals;
-    delete patient.vitals;
+    patient.vitals = null;
     await patient.save();
     return vitals;
   }
-  public async updatePatientVitals(vitalsDto: VitalsDto, patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async updatePatientVitals(vitalsDto: VitalsDto, email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) throw new NotFoundException('patient not found');
     patient.vitals = { ...vitalsDto };
     await patient.save();

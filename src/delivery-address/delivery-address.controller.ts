@@ -19,7 +19,7 @@ export class DeliveryAddressController {
   @Get('')
   @UseGuards(JwtAuthGuard)
   public async getAllUserAddresses(@Req() req) {
-    return this.addressService.getUserAddress(req.user._id);
+    return this.addressService.getUserAddress(req.user.email);
   }
 
   @Post('')
@@ -27,7 +27,7 @@ export class DeliveryAddressController {
   public async createUserAddress(@Body() addressDto: AddressDto, @Req() req) {
     return await this.addressService.createUserAddress(
       addressDto,
-      req.user._id,
+      req.user.email,
     );
   }
 

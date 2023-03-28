@@ -12,36 +12,36 @@ export class MedicalHistoryService {
 
   public async createPatientMedicalHistory(
     medicalHistoryDto: MedicalHistoryDto,
-    patientId: string,
+    email: string,
   ) {
-    const patient = await this.patientModel.findById(patientId);
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) throw new NotFoundException('patient not found');
     patient.medical_history = { ...medicalHistoryDto };
     await patient.save();
     return patient.medical_history;
   }
 
-  public async getPatientMedicalHistory(patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async getPatientMedicalHistory(email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient)
       throw new NotFoundException('patient medical history not found');
     return patient.medical_history;
   }
 
-  public async deletePatientMedicalHistory(patientId: string) {
-    const patient = await this.patientModel.findById(patientId);
+  public async deletePatientMedicalHistory(email: string) {
+    const patient = await this.patientModel.findOne({ email });
     if (!patient)
       throw new NotFoundException('patient medical history not found');
     const medicalHistory = patient.medical_history;
-    delete patient.medical_history;
+    patient.medical_history = null;
     await patient.save();
     return medicalHistory;
   }
   public async updatePatientMedicalHistory(
     medicalHistoryDto: MedicalHistoryDto,
-    patientId: string,
+    email: string,
   ) {
-    const patient = await this.patientModel.findById(patientId);
+    const patient = await this.patientModel.findOne({ email });
     if (!patient) throw new NotFoundException('patient not found');
     patient.medical_history = { ...medicalHistoryDto };
     await patient.save();

@@ -1,7 +1,8 @@
-import { IsEmail, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsEnum, IsStrongPassword } from 'class-validator';
 import { IsPhoneNumber, IsString, MinLength } from 'class-validator';
+import { ROLES } from '../types/user.type';
 
-export class CreatePatientDto {
+export class UserDto {
   @IsString()
   @MinLength(3)
   first_name: string;
@@ -18,4 +19,7 @@ export class CreatePatientDto {
 
   @IsStrongPassword()
   password: string;
+
+  @IsEnum(ROLES)
+  roles: ROLES;
 }

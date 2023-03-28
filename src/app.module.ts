@@ -11,6 +11,10 @@ import { VitalsModule } from './vitals/vitals.module';
 import { FamiliesModule } from './families/families.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { UsersModule } from './users/users.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -27,7 +31,7 @@ import { PatientModule } from './patient/patient.module';
     BullModule.registerQueue({
       name: 'telidoc',
     }),
-    MongooseModule.forRoot(process.env.MONGO_LOCAL),
+    MongooseModule.forRoot(process.env.MONGO_ATLAS),
     PatientModule,
     AuthModule,
     DoctorModule,
@@ -36,8 +40,14 @@ import { PatientModule } from './patient/patient.module';
     VitalsModule,
     FamiliesModule,
     MedicalHistoryModule,
+    UsersModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

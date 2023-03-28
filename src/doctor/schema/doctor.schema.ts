@@ -4,6 +4,7 @@ import {
   DoctorInterface,
   ProfessionalInformationInterface,
 } from '../interfaces/doctor.interface';
+import { DOCTOR_STATUS } from '../types/doctors-status.type';
 
 export type DoctorDocument = Doctor & Document;
 
@@ -41,9 +42,6 @@ export class Doctor extends Document implements DoctorInterface {
   @Prop({ type: String, trim: true, required: true, unique: true })
   phone_number: string;
 
-  @Prop({ type: String, trim: true, required: true })
-  password: string;
-
   @Prop({ type: String, trim: true })
   date_of_birth: string;
 
@@ -58,6 +56,15 @@ export class Doctor extends Document implements DoctorInterface {
 
   @Prop({ type: String, trim: true })
   address: string;
+
+  @Prop({ type: Number, trim: true, default: 0 })
+  consultation_fee: number;
+
+  @Prop({ type: Number, trim: true, default: 0 })
+  rating: number;
+
+  @Prop({ enum: DOCTOR_STATUS, default: DOCTOR_STATUS.PENDING })
+  status: DOCTOR_STATUS;
 
   @Prop({ type: ProfessionalInformation })
   professional_experience: ProfessionalInformation;
