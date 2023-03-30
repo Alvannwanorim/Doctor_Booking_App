@@ -1,18 +1,32 @@
-import { Body, Controller, Param, Post, Put, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  Put,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { DoctorService } from './doctor.service';
 import { ConsultationFeeDto } from './dto/consultation-fee.dto';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorStatusDto } from './interfaces/update-doctor-status.dto';
+import { RatingService } from './rating.service';
 
 @Controller('doctor')
 export class DoctorController {
-  constructor(private doctorService: DoctorService) {}
+  constructor(
+    private doctorService: DoctorService,
+    private ratingService: RatingService,
+  ) {}
 
   @Post('')
   public async createDoctor(@Body() createDoctor: CreateDoctorDto) {
     return await this.doctorService.createDoctor(createDoctor);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('status/:doctorId')
   public async updateDoctorStatus(
     @Param('doctorId') doctorId: string,
@@ -20,10 +34,12 @@ export class DoctorController {
   ) {
     return await this.doctorService.updateDoctorStatus(doctorId, statusDto);
   }
+
+  @UseGuards(JwtAuthGuard)
   @Put('consultation-fee/:doctorId')
   public async updateDoctorConsultationFee(
     @Param('doctorId') doctorId: string,
-    consultationFee: ConsultationFeeDto,
+    @Body() consultationFee: ConsultationFeeDto,
   ) {
     return await this.doctorService.updateDoctorConsultationFee(
       doctorId,
@@ -31,10 +47,13 @@ export class DoctorController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('')
   public async getDoctors() {
     return await this.doctorService.getDoctors();
   }
+
+  @UseGuards(JwtAuthGuard)
   @Get('/:doctorId')
   public async getDoctorById(@Param('doctorId') doctorId: string) {
     return await this.doctorService.getDoctorById(doctorId);
