@@ -7,10 +7,6 @@ export class AppointmentsDto {
 
   @IsString()
   @IsNotEmpty()
-  patient: string;
-
-  @IsString()
-  @IsNotEmpty()
   doctor: string;
 
   @IsEnum(APPOINTMENTS_STATUS)

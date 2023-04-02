@@ -27,7 +27,10 @@ export class DoctorService {
     const newUser = await this.userService.createUser(userData);
     if (newUser) {
       delete doctorDto.password;
-      const newDoctor = new this.doctorModel({ ...doctorDto });
+      const newDoctor = new this.doctorModel({
+        userId: newUser._id,
+        ...doctorDto,
+      });
       await newDoctor.save();
       return newDoctor;
     }
