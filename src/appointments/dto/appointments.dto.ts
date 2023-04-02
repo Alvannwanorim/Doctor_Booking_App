@@ -18,5 +18,9 @@ export class AppointmentsDto {
 
   @IsString()
   @IsNotEmpty()
-  time: string;
+  from: string;
+
+  @IsString()
+  @IsNotEmpty()
+  to: string;
 }

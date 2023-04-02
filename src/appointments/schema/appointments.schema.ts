@@ -29,7 +29,10 @@ export class Appointments implements AppointmentsInterface {
   date: string;
 
   @Prop({ type: String, required: true })
-  time: string;
+  from: string;
+
+  @Prop({ type: String, required: true })
+  to: string;
 
   @Prop({ type: PurposeOfVisit })
   purpose_of_visit: PurposeOfVisit;
