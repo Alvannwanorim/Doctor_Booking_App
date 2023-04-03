@@ -5,5 +5,6 @@ export interface AppointmentsInterface {
   date: string;
   status: APPOINTMENTS_STATUS;
   purpose_of_visit: PurposeOfVisitInterface;
-  time: string;
+  from: string;
+  to: string;
 }

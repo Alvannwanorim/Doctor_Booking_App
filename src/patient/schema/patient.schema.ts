@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { PatientInterface } from '../interfaces/patient.interface';
 import { MedicalHistory } from './medical-history.schema';
 import { Vitals } from './vitals.schema';
 
 export type PatientDocument = Patient & Document;
-
+const { ObjectId } = mongoose.Schema.Types;
 @Schema({
   toJSON: {
     virtuals: true,
@@ -17,6 +17,9 @@ export type PatientDocument = Patient & Document;
 })
 export class Patient extends Document implements PatientInterface {
   _id: string;
+
+  @Prop({ type: ObjectId, required: [true, 'Provide user Id'] })
+  userId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true, trim: true })
   first_name: string;

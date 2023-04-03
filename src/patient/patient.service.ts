@@ -52,7 +52,10 @@ export class PatientService {
     const newUser = await this.userService.createUser(userData);
     if (newUser) {
       delete patientDto.password;
-      const patient = new this.patientModel({ ...patientDto });
+      const patient = new this.patientModel({
+        userId: newUser._id,
+        ...patientDto,
+      });
       await patient.save();
       return patient;
     }

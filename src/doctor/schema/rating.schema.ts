@@ -18,7 +18,6 @@ export class Rating {
   @Prop({
     type: ObjectId,
     required: [true, 'Provide doctor Id'],
-    unique: true,
   })
   doctor: mongoose.Schema.Types.ObjectId;
 

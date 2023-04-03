@@ -8,6 +8,8 @@ import { DOCTOR_STATUS } from '../types/doctors-status.type';
 
 export type DoctorDocument = Doctor & Document;
 
+const { ObjectId } = mongoose.Schema.Types;
+
 class ProfessionalInformation implements ProfessionalInformationInterface {
   @Prop({ type: String, trim: true, required: true })
   category: string;
@@ -29,6 +31,9 @@ class ProfessionalInformation implements ProfessionalInformationInterface {
 })
 export class Doctor extends Document implements DoctorInterface {
   _id: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: ObjectId, required: [true, 'Provide user Id'] })
+  userId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, trim: true, required: true })
   first_name: string;

@@ -7,7 +7,10 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { ROLES } from 'src/users/types/user.type';
 import { RatingDto } from './dto/rating.dto';
 import { RatingService } from './rating.service';
 
@@ -18,8 +21,9 @@ export class RatingController {
   /**
    * createNewRating
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLES.PATIENT)
   @Post('')
-  @UseGuards(JwtAuthGuard)
   public async createNewRating(@Body() ratingDto: RatingDto, @Req() req) {
     return await this.ratingService.createNewRating(ratingDto, req.user._id);
   }

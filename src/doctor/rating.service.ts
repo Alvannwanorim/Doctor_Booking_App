@@ -36,6 +36,7 @@ export class RatingService {
     const allRating = await this.ratingModel.find({
       doctor: doctor_id,
     });
+
     const ratingCount = await this.ratingModel
       .find({
         doctor: doctor_id,
@@ -48,6 +49,27 @@ export class RatingService {
     doctor.rating = finalRating;
     await doctor.save();
     return newRating;
+  }
+  public async updateDoctorRating(doctorId: string) {
+    const doctor_id = new mongoose.Types.ObjectId(doctorId);
+    const doctor = await this.doctorModel.findById(doctorId);
+
+    const allRating = await this.ratingModel.find({
+      doctor: doctor_id,
+    });
+
+    const ratingCount = await this.ratingModel
+      .find({
+        doctor: doctor_id,
+      })
+      .count();
+
+    const finalRating =
+      allRating.reduce((acc, item) => acc + item.rating, 0) / ratingCount;
+
+    doctor.rating = finalRating;
+    await doctor.save();
+    return doctor;
   }
   public async getDoctorRating(doctorId: string) {
     const doctor_id = new mongoose.Types.ObjectId(doctorId);
