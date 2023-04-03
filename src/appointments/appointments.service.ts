@@ -1,14 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
 import { Patient, PatientDocument } from 'src/patient/schema/patient.schema';
-import { AppointmentsDto } from './dto/appointments.dto';
+import {
+  AppointmentsDto,
+  UpdateAppointmentsDto,
+  UpdateAppointmentStatusDto,
+} from './dto/appointments.dto';
 // import moment from 'moment';
 import {
   Appointments,
   AppointmentsDocument,
 } from './schema/appointments.schema';
+import { APPOINTMENTS_STATUS } from './types/appointments-status.type';
 
 @Injectable()
 export class AppointmentsService {
@@ -25,6 +30,18 @@ export class AppointmentsService {
     path: 'patient',
     model: this.patientModel,
     select: ['first_name', 'last_name', 'email', 'medical_history', 'vitals'],
+  };
+
+  private populateDoctor = {
+    path: 'doctor',
+    model: this.doctorModel,
+    select: [
+      'first_name',
+      'last_name',
+      'email',
+      'rating',
+      'professional_experience',
+    ],
   };
 
   public async bookNewAppointments(
@@ -55,14 +72,18 @@ export class AppointmentsService {
       .find({
         patient: patient._id,
       })
-      .populate([this.populatePatient]);
+      .populate([this.populatePatient])
+      .populate([this.populateDoctor]);
     return appointments;
   }
-  public async getAllDoctorsAppointments(userId: any) {
-    const doctor_id = new mongoose.Types.ObjectId(userId);
-    const appointments = await this.appointmentModel.find({
-      doctor: doctor_id,
-    });
+  public async getAllDoctorsAppointments(userId: string) {
+    const doctor = await this.doctorModel.findOne({ userId });
+    const appointments = await this.appointmentModel
+      .find({
+        doctor: doctor._id,
+      })
+      .populate([this.populatePatient])
+      .populate([this.populateDoctor]);
 
     return appointments;
   }
@@ -73,6 +94,30 @@ export class AppointmentsService {
   }
   public async getAllAppointments() {
     const appointment = await this.appointmentModel.find({});
+    return appointment;
+  }
+
+  public async updateAppointmentStatus(
+    appointmentId: string,
+    status: UpdateAppointmentStatusDto,
+  ) {
+    const appointment = await this.appointmentModel.findByIdAndUpdate(
+      appointmentId,
+      { ...status },
+      { new: true },
+    );
+    return appointment;
+  }
+
+  public async updateAppointment(
+    appointmentId: string,
+    updateDto: UpdateAppointmentsDto,
+  ) {
+    const appointment = await this.appointmentModel.findByIdAndUpdate(
+      appointmentId,
+      { status: APPOINTMENTS_STATUS.RESCHEDULED, ...updateDto },
+      { new: true },
+    );
     return appointment;
   }
 }

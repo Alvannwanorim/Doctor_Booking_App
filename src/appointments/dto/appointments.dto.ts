@@ -9,8 +9,21 @@ export class AppointmentsDto {
   @IsNotEmpty()
   doctor: string;
 
-  @IsEnum(APPOINTMENTS_STATUS)
-  status: APPOINTMENTS_STATUS;
+  @IsString()
+  @IsNotEmpty()
+  from: string;
+
+  @IsString()
+  @IsNotEmpty()
+  to: string;
+}
+export class UpdateAppointmentsDto {
+  @IsDateString()
+  date: string;
+
+  @IsString()
+  @IsNotEmpty()
+  doctor: string;
 
   @IsString()
   @IsNotEmpty()
@@ -19,4 +32,8 @@ export class AppointmentsDto {
   @IsString()
   @IsNotEmpty()
   to: string;
+}
+export class UpdateAppointmentStatusDto {
+  @IsEnum(APPOINTMENTS_STATUS)
+  status: APPOINTMENTS_STATUS;
 }
