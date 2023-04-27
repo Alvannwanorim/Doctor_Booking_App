@@ -5,6 +5,7 @@ import {
   ProfessionalInformationInterface,
 } from '../interfaces/doctor.interface';
 import { DOCTOR_STATUS } from '../types/doctors-status.type';
+import { Availability } from './availability.schema';
 
 export type DoctorDocument = Doctor & Document;
 
@@ -73,6 +74,9 @@ export class Doctor extends Document implements DoctorInterface {
 
   @Prop({ type: ProfessionalInformation })
   professional_experience: ProfessionalInformation;
+
+  @Prop({ type: Availability })
+  availability: Availability;
 }
 
 export const DoctorSchema = SchemaFactory.createForClass(Doctor);

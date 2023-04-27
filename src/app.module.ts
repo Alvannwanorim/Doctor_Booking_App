@@ -13,6 +13,7 @@ import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { AppController } from './app.controller';
     FamiliesModule,
     MedicalHistoryModule,
     UsersModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [],
