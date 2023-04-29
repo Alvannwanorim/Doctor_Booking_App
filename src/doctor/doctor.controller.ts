@@ -5,21 +5,22 @@ import {
   Post,
   Put,
   Get,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { DoctorService } from './doctor.service';
 import { ConsultationFeeDto } from './dto/consultation-fee.dto';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
-import { UpdateDoctorStatusDto } from './interfaces/update-doctor-status.dto';
-import { RatingService } from './rating.service';
+import { UpdateDoctorStatusDto } from './dto/update-doctor-status.dto';
+import { AvailabilityDto } from './dto/availability.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ROLES } from 'src/users/types/user.type';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('doctor')
 export class DoctorController {
-  constructor(
-    private doctorService: DoctorService,
-    private ratingService: RatingService,
-  ) {}
+  constructor(private doctorService: DoctorService) {}
 
   @Post('')
   public async createDoctor(@Body() createDoctor: CreateDoctorDto) {
@@ -57,5 +58,17 @@ export class DoctorController {
   @Get('/:doctorId')
   public async getDoctorById(@Param('doctorId') doctorId: string) {
     return await this.doctorService.getDoctorById(doctorId);
+  }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLES.DOCTOR)
+  @Post('availability')
+  public async createOrUpdateDoctorAvailability(
+    @Body() availabilityDto: AvailabilityDto,
+    @Req() req,
+  ) {
+    return await this.doctorService.createOrUpdateDoctorAvailability(
+      availabilityDto,
+      req.user._id,
+    );
   }
 }

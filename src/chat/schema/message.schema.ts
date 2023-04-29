@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 const { ObjectId } = mongoose.Schema.Types;
-export type ChatDocument = Message & Document;
+export type MessageDocument = Message & Document;
 @Schema({
   toJSON: {
     virtuals: true,

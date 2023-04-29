@@ -7,12 +7,14 @@ import { RatingController } from './rating.controller';
 import { RatingService } from './rating.service';
 import { Doctor, DoctorSchema } from './schema/doctor.schema';
 import { Rating, RatingSchema } from './schema/rating.schema';
+import { Availability, AvailabilitySchema } from './schema/availability.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Doctor.name, schema: DoctorSchema },
       { name: Rating.name, schema: RatingSchema },
+      { name: Availability.name, schema: AvailabilitySchema },
     ]),
     UsersModule,
   ],
