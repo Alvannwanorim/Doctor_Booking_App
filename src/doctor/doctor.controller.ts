@@ -6,6 +6,7 @@ import {
   Put,
   Get,
   Req,
+  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
@@ -59,6 +60,7 @@ export class DoctorController {
   public async getDoctorById(@Param('doctorId') doctorId: string) {
     return await this.doctorService.getDoctorById(doctorId);
   }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ROLES.DOCTOR)
   @Post('availability')
@@ -70,5 +72,32 @@ export class DoctorController {
       availabilityDto,
       req.user._id,
     );
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLES.DOCTOR)
+  @Delete('availability')
+  public async deleteTimeSlot(
+    @Body() availabilityDto: AvailabilityDto,
+    @Req() req,
+  ) {
+    return await this.doctorService.deleteTimeSlot(
+      availabilityDto,
+      req.user._id,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('availability')
+  public async getDoctorAvailability(@Req() req) {
+    console.log('here');
+
+    return await this.doctorService.getDoctorAvailability(req.user._id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('availability/today')
+  public async getDoctorAvailabilityToday(@Req() req) {
+    return await this.doctorService.getDoctorAvailability(req.user._id);
   }
 }

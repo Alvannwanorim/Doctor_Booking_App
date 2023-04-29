@@ -125,4 +125,41 @@ export class DoctorService {
     await newWeekdayAvailability.save();
     return newWeekdayAvailability;
   }
+
+  public async deleteTimeSlot(
+    availabilityDto: AvailabilityDto,
+    doctorId: string,
+  ) {
+    const doctor_id = new mongoose.Types.ObjectId(doctorId);
+    const timeSlot = await this.availabilityModel.findOneAndUpdate(
+      { doctor: doctor_id, weekday: availabilityDto.week_day },
+      { $pull: { slots: availabilityDto.time } },
+      { new: true },
+    );
+    return timeSlot;
+  }
+
+  public async getDoctorAvailabilityToday(doctorId: string) {
+    const currentDate = new Date();
+    const weekdays = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const currentWeekday = weekdays[currentDate.getDay()];
+    return currentWeekday;
+  }
+  public async getDoctorAvailability(doctorId: string) {
+    const doctor_id = new mongoose.Types.ObjectId(doctorId);
+    console.log(doctor_id);
+
+    const availability = await this.availabilityModel.find({
+      doctor: doctor_id,
+    });
+    return availability;
+  }
 }
