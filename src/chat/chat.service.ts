@@ -59,6 +59,7 @@ export class ChatService {
     const chat = await this.chatModel.findById(messageDto.chat_id);
     if (!chat) throw new NotFoundException('Chat not found');
     const message = new this.messageModel({ ...messageDto });
+    await message.save();
     return message;
   }
 
@@ -79,6 +80,7 @@ export class ChatService {
    */
   public async deleteMessage(message_id: string) {
     const message = await this.messageModel.findByIdAndRemove(message_id);
+    if (!message) throw new NotFoundException('Message not found');
     return message;
   }
 

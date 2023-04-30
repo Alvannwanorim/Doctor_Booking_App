@@ -23,7 +23,7 @@ export class Message {
 
   @Prop({
     type: ObjectId,
-    required: [true, 'Provide Chat Id'],
+    required: [true, 'Provide sender Id'],
   })
   sender_id: mongoose.Schema.Types.ObjectId;
 
