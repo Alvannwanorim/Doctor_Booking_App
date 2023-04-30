@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat, ChatDocument } from './schema/chat.schema';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Message, MessageDocument } from './schema/message.schema';
 import { ChatDto } from './dto/chat.dto';
 import { MessageDto } from './dto/message.dto';
@@ -19,13 +19,20 @@ export class ChatService {
    */
   public async createChat(chatDto: ChatDto) {
     const existingChat = await this.chatModel.findOne({
-      doctor: chatDto.doctor,
-      patient: chatDto.patient,
+      members: {
+        $all: [
+          new mongoose.Types.ObjectId(chatDto.doctor),
+          new mongoose.Types.ObjectId(chatDto.patient),
+        ],
+      },
     });
 
     if (existingChat) return existingChat;
     const chat = new this.chatModel({
-      ...chatDto,
+      members: [
+        new mongoose.Types.ObjectId(chatDto.doctor),
+        new mongoose.Types.ObjectId(chatDto.patient),
+      ],
     });
     await chat.save();
     return chat;
@@ -87,5 +94,19 @@ export class ChatService {
     message.text = text;
     await message.save();
     return message;
+  }
+
+  public async getChatById(chat_id: string) {
+    const chat = await this.chatModel.findById(chat_id);
+    if (!chat) throw new NotFoundException('Chat not found');
+    return chat;
+  }
+  public async getUserChats(_id: any) {
+    const userId = new mongoose.Types.ObjectId(_id);
+    const userChat = await this.chatModel.find({
+      members: { $in: [userId] },
+    });
+
+    return userChat;
   }
 }

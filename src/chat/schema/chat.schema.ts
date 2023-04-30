@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-const { ObjectId } = mongoose.Schema.Types;
 export type ChatDocument = Chat & Document;
 @Schema({
   toJSON: {
@@ -14,11 +13,8 @@ export type ChatDocument = Chat & Document;
 export class Chat {
   _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: ObjectId, required: [true, 'Provide patient Id'] })
-  patient: mongoose.Schema.Types.ObjectId;
-
-  @Prop({ type: ObjectId, required: [true, 'Provide doctor Id'] })
-  doctor: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: Array, required: [true, 'Provide patient Id'] })
+  members: [mongoose.Schema.Types.ObjectId];
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);
