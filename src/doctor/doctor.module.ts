@@ -8,6 +8,7 @@ import { RatingService } from './rating.service';
 import { Doctor, DoctorSchema } from './schema/doctor.schema';
 import { Rating, RatingSchema } from './schema/rating.schema';
 import { Availability, AvailabilitySchema } from './schema/availability.schema';
+import { AvailabilityController } from './availability.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { Availability, AvailabilitySchema } from './schema/availability.schema';
     ]),
     UsersModule,
   ],
-  controllers: [DoctorController, RatingController],
+  controllers: [DoctorController, RatingController, AvailabilityController],
   providers: [DoctorService, RatingService],
   exports: [DoctorService, MongooseModule],
 })

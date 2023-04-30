@@ -138,24 +138,32 @@ export class DoctorService {
     );
     return timeSlot;
   }
-
-  public async getDoctorAvailabilityToday(doctorId: string) {
+  public getCurrentDate() {
     const currentDate = new Date();
     const weekdays = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
+      'SUNDAY',
+      'MONDAY',
+      'TUESDAY',
+      'WEDNESDAY',
+      'THURSDAY',
+      'FRIDAY',
+      'SATURDAY',
     ];
     const currentWeekday = weekdays[currentDate.getDay()];
     return currentWeekday;
   }
+  public async getDoctorAvailabilityToday(doctorId: string) {
+    const currentDate = this.getCurrentDate();
+    const doctor_id = new mongoose.Types.ObjectId(doctorId);
+    const availability = await this.availabilityModel.findOne({
+      doctor: doctor_id,
+      weekday: currentDate,
+    });
+    if (!availability) throw new NotFoundException('Not record was found');
+    return availability;
+  }
   public async getDoctorAvailability(doctorId: string) {
     const doctor_id = new mongoose.Types.ObjectId(doctorId);
-    console.log(doctor_id);
 
     const availability = await this.availabilityModel.find({
       doctor: doctor_id,
