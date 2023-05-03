@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Doctor, DoctorDocument } from 'src/doctor/schema/doctor.schema';
@@ -44,6 +48,22 @@ export class AppointmentsService {
     ],
   };
 
+  public validateTime(timeStr: string): boolean {
+    const regex = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i;
+    return regex.test(timeStr);
+  }
+
+  public isValidDate(dateString: string): boolean {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
+  }
+
+  public isPastDate(dateString: string): boolean {
+    const date: Date = new Date(dateString);
+    const currentDate: Date = new Date();
+    return date < currentDate;
+  }
+
   public async bookNewAppointments(
     appointmentDto: AppointmentsDto,
     userId: string,
@@ -57,12 +77,35 @@ export class AppointmentsService {
     if (!doctor) {
       throw new NotFoundException('Patient not found');
     }
+    const validStartTime = this.validateTime(appointmentDto.from);
+    const validEndTime = this.validateTime(appointmentDto.to);
 
+    if (!validEndTime)
+      throw new BadRequestException('Provide a valid start time ');
+    if (!validStartTime)
+      throw new BadRequestException(' Provide a valid end time');
+
+    const pastDate = this.isPastDate(appointmentDto.date);
+    if (pastDate) throw new BadRequestException('Date cannot be in the past');
+
+    const existingAppointment = await this.appointmentModel.findOne({
+      date: appointmentDto.date,
+      from: { $lt: appointmentDto.to },
+      to: { $gt: appointmentDto.from },
+    });
+
+    if (existingAppointment)
+      throw new BadRequestException('This date and time is not available');
+
+    // check for user balance
+    // attempt charge from user balance
     const appointment = new this.appointmentModel({
       patient: patient._id,
       ...appointmentDto,
     });
     await appointment.save();
+
+    //
     return appointment;
   }
 
