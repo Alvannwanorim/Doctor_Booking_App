@@ -14,6 +14,8 @@ import { PatientModule } from './patient/patient.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
+import { WalletModule } from './wallet/wallet.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -30,7 +32,7 @@ import { ChatModule } from './chat/chat.module';
     BullModule.registerQueue({
       name: 'telidoc',
     }),
-    MongooseModule.forRoot(process.env.MONGO_LOCAL),
+    MongooseModule.forRoot(process.env.MONGO_ATLAS),
     PatientModule,
     AuthModule,
     DoctorModule,
@@ -41,6 +43,8 @@ import { ChatModule } from './chat/chat.module';
     MedicalHistoryModule,
     UsersModule,
     ChatModule,
+    WalletModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [],
