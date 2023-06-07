@@ -29,7 +29,7 @@ export class DoctorService {
   public async createDoctor(doctorDto: CreateDoctorDto) {
     const userData: UserDto = {
       email: doctorDto.email,
-      phone_number: doctorDto.password,
+      phone_number: doctorDto.phone_number,
       first_name: doctorDto.first_name,
       last_name: doctorDto.last_name,
       password: doctorDto.password,

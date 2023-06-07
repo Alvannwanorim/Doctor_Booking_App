@@ -62,6 +62,15 @@ export class Doctor extends Document implements DoctorInterface {
   @Prop({ type: String, trim: true })
   address: string;
 
+  @Prop({ type: String })
+  bio: string;
+
+  @Prop({ type: String })
+  languages: string;
+
+  @Prop({ type: String })
+  number_of_patients: string;
+
   @Prop({ type: Number, trim: true, default: 0 })
   consultation_fee: number;
 

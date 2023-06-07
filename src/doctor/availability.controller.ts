@@ -4,6 +4,7 @@ import {
   Post,
   Get,
   Req,
+  Param,
   Delete,
   UseGuards,
 } from '@nestjs/common';
@@ -50,8 +51,8 @@ export class AvailabilityController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('today')
-  public async getDoctorAvailabilityToday(@Req() req) {
-    return await this.doctorService.getDoctorAvailabilityToday(req.user._id);
+  @Get('today/:')
+  public async getDoctorAvailabilityToday(@Param('doctorId') doctorId: string) {
+    return await this.doctorService.getDoctorAvailabilityToday(doctorId);
   }
 }
