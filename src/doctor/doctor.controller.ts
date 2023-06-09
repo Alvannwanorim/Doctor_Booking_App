@@ -48,6 +48,11 @@ export class DoctorController {
     return await this.doctorService.getDoctors();
   }
 
+  @Get('unauthorized')
+  public async getAllDoctors() {
+    return await this.doctorService.getDoctors();
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('/:doctorId')
   public async getDoctorById(@Param('doctorId') doctorId: string) {

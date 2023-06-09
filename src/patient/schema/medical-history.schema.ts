@@ -3,20 +3,20 @@ import { MedicalHistoryInterface } from 'src/medical-history/interfaces/medical-
 
 export class MedicalHistory implements MedicalHistoryInterface {
   @Prop({
-    type: String,
+    type: Array,
     trim: true,
   })
-  previous_treatment: string;
+  previous_treatment: [string];
 
   @Prop({
-    type: String,
+    type: Array,
     trim: true,
   })
-  current_medication: string;
+  current_medication: [string];
 
   @Prop({
-    type: String,
+    type: Array,
     trim: true,
   })
-  drug_or_food_allergies: string;
+  drug_or_food_allergies: [string];
 }

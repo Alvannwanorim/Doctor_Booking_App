@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty } from 'class-validator';
 import { MedicalHistoryInterface } from '../interfaces/medical-history.interface';
 
 export class MedicalHistoryDto implements MedicalHistoryInterface {
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  previous_treatment: string;
+  previous_treatment: [string];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  current_medication: string;
+  current_medication: [string];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  drug_or_food_allergies: string;
+  drug_or_food_allergies: [string];
 }

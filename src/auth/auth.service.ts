@@ -88,7 +88,7 @@ export class AuthService {
     return this.loginPatient(User);
   }
 
-  public getCurrentUser(UserId: string) {
-    return this.userService.getCurrentUser(UserId);
+  public getCurrentUser(userId: string) {
+    return this.userService.getCurrentUser(userId);
   }
 }
