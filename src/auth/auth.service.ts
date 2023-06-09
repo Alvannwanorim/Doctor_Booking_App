@@ -10,6 +10,7 @@ import { JwtDto } from './dto/jwt.dto';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/schema/user.schema';
 import { ROLES } from 'src/users/types/user.type';
+import { ChangePasswordDto } from 'src/users/dto/change_password.dto';
 
 @Injectable()
 export class AuthService {
@@ -90,5 +91,8 @@ export class AuthService {
 
   public getCurrentUser(userId: string) {
     return this.userService.getCurrentUser(userId);
+  }
+  public ChangePassword(changePasswordDto: ChangePasswordDto, userId: string) {
+    return this.userService.changePassword(changePasswordDto, userId);
   }
 }

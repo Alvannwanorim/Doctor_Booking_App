@@ -1,9 +1,10 @@
-import { Controller, Req, Post, UseGuards, Get } from '@nestjs/common';
+import { Controller, Req, Post, UseGuards, Body, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleAuthDto } from './dto/google-auth.dto';
 import { GoogleAuthGuard } from './guards/google.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/local.guard';
+import { ChangePasswordDto } from 'src/users/dto/change_password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -43,5 +44,16 @@ export class AuthController {
   @Get('/current-user')
   public async getCurrentUser(@Req() req) {
     return await this.authService.getCurrentUser(req.user._id);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('/change-password')
+  public async changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Req() req,
+  ) {
+    return await this.authService.ChangePassword(
+      changePasswordDto,
+      req.user._id,
+    );
   }
 }

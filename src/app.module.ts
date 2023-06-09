@@ -16,6 +16,7 @@ import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
 import { WalletModule } from './wallet/wallet.module';
 import { EventsModule } from './events/events.module';
+import { BankDetailsModule } from './bank-details/bank-details.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { EventsModule } from './events/events.module';
     ChatModule,
     WalletModule,
     EventsModule,
+    BankDetailsModule,
   ],
   controllers: [AppController],
   providers: [],

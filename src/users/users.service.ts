@@ -132,13 +132,19 @@ export class UsersService {
       throw new HttpException(
         {
           status: HttpStatus.FORBIDDEN,
-          error: 'Password miss-match',
+          error: 'Incorrect password',
         },
         HttpStatus.FORBIDDEN,
       );
     }
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(new_password, salt);
+    await user.save();
+    return user;
+  }
+
+  public async getUserById(id: string) {
+    const user = await this.userModel.findById(id);
     return user;
   }
 }
