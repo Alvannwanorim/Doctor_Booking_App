@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import {
-  DoctorInterface,
-  ProfessionalInformationInterface,
-} from '../interfaces/doctor.interface';
+import { DoctorInterface } from '../interfaces/doctor.interface';
 import { DOCTOR_STATUS } from '../types/doctors-status.type';
+import { ProfessionalInformationInterface } from '../interfaces/professional-information.interface';
+import { QualificationsInterface } from '../interfaces/qualifications.interface';
+import { DocumentsInterface } from '../interfaces/documents.interface';
 
 export type DoctorDocument = Doctor & Document;
 
@@ -19,6 +19,60 @@ class ProfessionalInformation implements ProfessionalInformationInterface {
 
   @Prop({ type: String, trim: true, required: true })
   professional_status: string;
+
+  @Prop({ type: String, trim: true, required: true })
+  specialization: string;
+
+  @Prop({ type: String })
+  bio: string;
+
+  @Prop({ type: Array })
+  languages: [string];
+}
+class Qualifications implements QualificationsInterface {
+  @Prop({ type: String, required: true })
+  degree: string;
+
+  @Prop({ type: String, required: true })
+  university: string;
+
+  @Prop({ type: String, required: true })
+  name_of_hospital_of_practice: string;
+
+  @Prop({ type: String, required: true })
+  contact_of_hospital_of_practice: string;
+
+  @Prop({ type: String, required: true })
+  country_of_hospital_of_practice: string;
+
+  @Prop({ type: String, required: true })
+  state_of_hospital_of_practice: string;
+
+  @Prop({ type: String, required: true })
+  license_number: string;
+
+  @Prop({ type: String, required: true })
+  license_expiry_date: string;
+}
+
+class Documents implements DocumentsInterface {
+  @Prop({ type: String })
+  professional_photograph: string;
+
+  @Prop({ type: String })
+  id_card: string;
+
+  @Prop({ type: String })
+  degree_certificate: string;
+
+  @Prop({ type: String })
+  practice_license: string;
+
+  @Prop({ type: String })
+  nysc_certificate: string;
+
+  @Prop({ type: String })
+  signature: string;
 }
 @Schema({
   toJSON: {
@@ -63,12 +117,6 @@ export class Doctor extends Document implements DoctorInterface {
   address: string;
 
   @Prop({ type: String })
-  bio: string;
-
-  @Prop({ type: String })
-  languages: string;
-
-  @Prop({ type: String })
   number_of_patients: string;
 
   @Prop({ type: Number, trim: true, default: 0 })
@@ -82,6 +130,12 @@ export class Doctor extends Document implements DoctorInterface {
 
   @Prop({ type: ProfessionalInformation })
   professional_experience: ProfessionalInformation;
+
+  @Prop({ type: Qualifications })
+  qualifications: Qualifications;
+
+  @Prop({ type: Documents })
+  documents: Documents;
 }
 
 export const DoctorSchema = SchemaFactory.createForClass(Doctor);

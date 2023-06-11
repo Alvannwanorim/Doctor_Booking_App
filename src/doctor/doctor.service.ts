@@ -5,7 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { CreateDoctorDto } from './dto/create-doctor.dto';
+import {
+  CreateDoctorDto,
+  ProfessionalExperienceDto,
+} from './dto/create-doctor.dto';
 import { ConsultationFeeDto } from './dto/consultation-fee.dto';
 import { UpdateDoctorStatusDto } from './dto/update-doctor-status.dto';
 import { Doctor, DoctorDocument } from './schema/doctor.schema';
@@ -17,6 +20,8 @@ import {
   Availability,
   AvailabilityDocument,
 } from './schema/availability.schema';
+import { QualificationsDto } from './dto/qualifications.dto';
+import { DocumentsDto } from './dto/documents.dto';
 @Injectable()
 export class DoctorService {
   constructor(
@@ -169,5 +174,39 @@ export class DoctorService {
       doctor: doctor_id,
     });
     return availability;
+  }
+
+  public async updateDocuments(_id: any, documentsDto: DocumentsDto) {
+    const doctor = await this.doctorModel.findOneAndUpdate(
+      { userId: new mongoose.Types.ObjectId(_id) },
+      { documents: documentsDto },
+      { new: true },
+    );
+    if (!doctor) throw new NotFoundException('Doctor not found');
+    return doctor;
+  }
+  public async updateQualifications(
+    _id: any,
+    qualificationsDto: QualificationsDto,
+  ) {
+    const doctor = await this.doctorModel.findOneAndUpdate(
+      { userId: new mongoose.Types.ObjectId(_id) },
+      { qualifications: qualificationsDto },
+      { new: true },
+    );
+    if (!doctor) throw new NotFoundException('Doctor not found');
+    return doctor;
+  }
+  public async updateProfessionalExperience(
+    _id: any,
+    professionalExperienceDto: ProfessionalExperienceDto,
+  ) {
+    const doctor = await this.doctorModel.findOneAndUpdate(
+      { userId: new mongoose.Types.ObjectId(_id) },
+      { professional_experience: professionalExperienceDto },
+      { new: true },
+    );
+    if (!doctor) throw new NotFoundException('Doctor not found');
+    return doctor;
   }
 }

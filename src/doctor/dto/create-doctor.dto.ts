@@ -12,7 +12,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { DoctorInterface } from '../interfaces/doctor.interface';
-export class ProfessionalExperienceDto {
+import { ProfessionalInformationInterface } from '../interfaces/professional-information.interface';
+export class ProfessionalExperienceDto
+  implements ProfessionalInformationInterface
+{
   @IsString()
   @IsNotEmpty()
   category: string;
@@ -24,6 +27,10 @@ export class ProfessionalExperienceDto {
   @IsString()
   @IsNotEmpty()
   professional_status: string;
+
+  @IsString()
+  @IsNotEmpty()
+  specialization: string;
 }
 export class CreateDoctorDto implements DoctorInterface {
   @IsString()

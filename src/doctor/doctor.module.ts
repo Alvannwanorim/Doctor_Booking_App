@@ -9,6 +9,7 @@ import { Doctor, DoctorSchema } from './schema/doctor.schema';
 import { Rating, RatingSchema } from './schema/rating.schema';
 import { Availability, AvailabilitySchema } from './schema/availability.schema';
 import { AvailabilityController } from './availability.controller';
+import { Referee, RefereeSchema } from './schema/referee.schema';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AvailabilityController } from './availability.controller';
       { name: Doctor.name, schema: DoctorSchema },
       { name: Rating.name, schema: RatingSchema },
       { name: Availability.name, schema: AvailabilitySchema },
+      { name: Referee.name, schema: RefereeSchema },
     ]),
     UsersModule,
   ],

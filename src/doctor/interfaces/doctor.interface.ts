@@ -1,8 +1,4 @@
-export interface ProfessionalInformationInterface {
-  category: string;
-  experience: string;
-  professional_status: string;
-}
+import { ProfessionalInformationInterface } from './professional-information.interface';
 
 export interface DoctorInterface {
   first_name: string;
